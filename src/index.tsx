@@ -12,7 +12,7 @@ import {
 
 const LAST = 0;
 
-const Comp = (id) => React.lazy(() => import(`./sketches/${id}`));
+const Comp = (id) => React.lazy(() => import(`./sketches/${id}.tsx`));
 
 const Goto = () => {
   const { id } = useParams();
