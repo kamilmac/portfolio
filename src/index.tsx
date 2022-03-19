@@ -1,53 +1,42 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-// import { App }  from './sketches/1'
-
 import {
   BrowserRouter,
   Routes,
   Route,
   useParams,
+  Navigate,
 } from "react-router-dom";
 
-const LAST = 0;
+const RECENT_SKETCH = '0';
 
-const Comp = (id) => React.lazy(() => import(`./sketches/${id}.tsx`));
-
-const Goto = () => {
+const Sketch = () => {
   const { id } = useParams();
-  console.log({id})
-
-  const Elem = Comp(id || LAST);
-
+  const Component = React.lazy(() => import(`./sketches/${id || RECENT_SKETCH}.tsx`));
   return (
     <React.Suspense
       fallback={<>...</>}
     >
-      <Elem />
+      <Component />
     </React.Suspense>
-  )
-}
+  );
+};
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path=":id"
-          element={
-            <Goto />
-          }
-        />
-        <Route path="/" element={<Goto />} />
+        <Route path=":id" element={<Sketch />} />
+        <Route path="/" element={<Navigate replace to={`/${RECENT_SKETCH}`} />} />
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 ReactDOM.render(
   <React.StrictMode>
     <Router />
   </React.StrictMode>,
   document.getElementById('root')
-)
+);
