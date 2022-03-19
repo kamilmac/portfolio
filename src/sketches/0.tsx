@@ -5,6 +5,7 @@ const Box: React.FC<JSX.IntrinsicElements['mesh']> = (props) => {
   const ref = React.useRef()
   const [hovered, hover] = React.useState(false)
   const [clicked, click] = React.useState(false)
+
   useFrame((state, delta) => {
     ref.current.rotation.x += 0.01
   })
@@ -26,7 +27,7 @@ const Box: React.FC<JSX.IntrinsicElements['mesh']> = (props) => {
   )
 }
 
-export const App: React.FC = () => {
+const App: React.FC = () => {
   return (
     <Canvas
       style={{
@@ -52,3 +53,5 @@ const Light = () => {
     <pointLight ref={ref} position={[-1, 10, 10]} color="red" intensity={4}/>
   )
 }
+
+export default App;
