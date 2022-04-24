@@ -6,11 +6,11 @@ const COLORS = [
   '#E9B44C',
   '#E4D6A7',
   '#1C110A',
-  '#50A2A7',
+  '#50A2A7'
 ];
 
-const NUM_OF_BOXES = 160;
-const MAX_POSITION_DEVIATION = 6;
+const NUM_OF_BOXES = 800;
+const MAX_POSITION_DEVIATION = 10;
 
 const boxes = [...Array(NUM_OF_BOXES).fill({})]
   .map(b => ({
