@@ -22,7 +22,7 @@ function spCode() {
   setStepSize(0.2);
   let buttonHover = input();
   let click = input();
-  let n = noise(getSpace() * 8 + buttonHover);
+  let n = noise(getSpace() * 89 + buttonHover);
   shine(10);
   color(0.2 * normal * click + n * 0.2 + vec3(0, 0, 2));
   sphere(0.3);

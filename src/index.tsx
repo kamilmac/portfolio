@@ -9,7 +9,7 @@ import {
   Navigate,
 } from "react-router-dom";
 
-const RECENT_SKETCH = '0';
+const RECENT_SKETCH = '2';
 
 const Sketch = () => {
   const { id } = useParams();
