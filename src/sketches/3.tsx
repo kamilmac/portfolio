@@ -3,6 +3,8 @@ import React from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { LayerMaterial, Depth, Noise } from 'lamina'
 
+import { MeshWobbleMaterial, MeshReflectorMaterial, Torus } from '@react-three/drei'
+
 const COLORS = [
   '#9B2915',
   '#E9B44C',
@@ -12,7 +14,7 @@ const COLORS = [
 ];
 
 const NUM_OF_BOXES = 100;
-const MAX_POSITION_DEVIATION = 2;
+const MAX_POSITION_DEVIATION = 10;
 
 const boxes = [...Array(NUM_OF_BOXES).fill({})]
   .map(b => ({
@@ -30,24 +32,14 @@ const Box: React.FC<JSX.IntrinsicElements['mesh']> = (props) => {
   const [clicked, click] = React.useState(false)
 
   useFrame((state, delta) => {
-    ref.current.rotation.x += 0.001
-    ref.current.rotation.y += 0.001
+    ref.current.rotation.x += props.position[2] / 1000
+    ref.current.rotation.y += props.position[2] / 1000
   })
 
   return (
-    <>
-      <mesh
-        {...props}
-        ref={ref}
-        scale={clicked ? 1.5 : 1}
-        onClick={(event) => click(!clicked)}
-        onPointerOver={(event) => hover(true)}
-        onPointerOut={(event) => hover(false)}
-      >
-        <boxGeometry args={props.position} />
-        <meshBasicMaterial color={props.color} />
-      </mesh>
-    </>
+    <Torus ref={ref} args={[2, props.position[2] / 40, 50, 128]}>
+      <MeshWobbleMaterial attach="material" factor={1} speed={1} color={props.color} />
+    </Torus>
   )
 }
 
@@ -87,13 +79,9 @@ const Camera: React.FC = () => {
 
 const Light = () => {
   const ref = React.useRef()
-  useFrame((state, delta) => {
-    if (ref?.current) {
-      ref.current.intensity += 10;
-    }
-  })
+ 
   return (
-    <pointLight ref={ref} position={[-1, 10, 10]} color="red" intensity={4}/>
+    <pointLight ref={ref} position={[-1, 10, 10]} color="red" intensity={86}/>
   )
 }
 
@@ -102,8 +90,8 @@ function Bg() {
     <mesh scale={100}>
       <boxGeometry args={[1, 1, 1]} />
       <LayerMaterial side={THREE.BackSide}>
-        <Depth colorB={COLORS[0]} colorA={COLORS[1]} alpha={1} mode="normal" near={10} far={200} origin={[-100, 100, -100]} />
-        <Noise mapping="local" type="white" scale={1000} colorA="white" colorB="black" mode="subtract" alpha={0.2} />
+        <Depth colorB={COLORS[3]} colorA={COLORS[4]} alpha={1} mode="normal" near={100} far={200} origin={[-100, 100, -100]} />
+        <Noise mapping="local" type="white" scale={100} colorA="white" colorB="black" mode="subtract" alpha={0.2} />
       </LayerMaterial>
     </mesh>
   )
