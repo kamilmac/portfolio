@@ -13,7 +13,7 @@ const COLORS = [
   '#50A2A7'
 ];
 
-const NUM_OF_BOXES = 1000000;
+const NUM_OF_BOXES = 100000;
 const MAX_POSITION_DEVIATION = 200;
 
 const boxes = [...Array(NUM_OF_BOXES).fill({})]
@@ -77,7 +77,7 @@ const Camera: React.FC = () => {
   return (
     <OrthographicCamera
       ref={ref}
-      position={[10, 10,10]}
+      position={[100, 1000, 10000]}
     />
   )
 }
