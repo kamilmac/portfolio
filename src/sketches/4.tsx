@@ -3,7 +3,7 @@ import React from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { LayerMaterial, Depth, Noise } from 'lamina'
 
-import { MeshWobbleMaterial, MeshReflectorMaterial, Torus, Text } from '@react-three/drei'
+import { MeshWobbleMaterial, MeshReflectorMaterial, Torus, Text, OrthographicCamera } from '@react-three/drei'
 
 const COLORS = [
   '#9B2915',
@@ -13,8 +13,8 @@ const COLORS = [
   '#50A2A7'
 ];
 
-const NUM_OF_BOXES = 100;
-const MAX_POSITION_DEVIATION = 10;
+const NUM_OF_BOXES = 1000000;
+const MAX_POSITION_DEVIATION = 200;
 
 const boxes = [...Array(NUM_OF_BOXES).fill({})]
   .map(b => ({
@@ -26,20 +26,24 @@ const boxes = [...Array(NUM_OF_BOXES).fill({})]
     ],
   }));
 
-const Box: React.FC<JSX.IntrinsicElements['mesh']> = (props) => {
+const Box: React.FC<JSX.IntrinsicElements['mesh']> = ({count = NUM_OF_BOXES, temp = new THREE.Object3D()}) => {
   const ref = React.useRef()
-  const [hovered, hover] = React.useState(false)
-  const [clicked, click] = React.useState(false)
 
-  useFrame((state, delta) => {
-    ref.current.rotation.x += props.position[2] / 1000
-    ref.current.rotation.y += props.position[2] / 1000
-  })
-
+  React.useEffect(() => {
+    // Set positions
+    for (let i = 0; i < count; i++) {
+      temp.position.set(boxes[i].position[0], boxes[i].position[1], boxes[i].position[2])
+      temp.updateMatrix()
+      ref.current.setMatrixAt(i, temp.matrix)
+    }
+    // Update the instance
+    ref.current.instanceMatrix.needsUpdate = true
+  }, [])
   return (
-    <Torus ref={ref} args={[2, props.position[2] / 80, 50, 128]}>
-      <MeshWobbleMaterial attach="material" factor={1} speed={1} color={props.color} />
-    </Torus>
+    <instancedMesh ref={ref} args={[10, 100, count]}>
+      <boxGeometry />
+      <meshPhongMaterial />
+    </instancedMesh>
   )
 }
 
@@ -51,36 +55,27 @@ const App: React.FC = () => {
       }}
     >
       <Light />
-      {
-        boxes.map(b => (
-          <Box position={b.position} color={b.color}/>
-        ))
-      }
+      <Box />
       <Camera />
       <Bg />
-      <Text
-        glyphGeometryDetail={32}
-        font="https://fonts.gstatic.com/s/merriweather/v21/u-4l0qyriQwlOrhSvowK_l5-eR7NWMf8.woff"
-        fontSize={2}
-        letterSpacing={-0.075}
-        lineHeight={0.8}
-        position={[0, 0, 3]}>
-        {'3'}
-        <MeshWobbleMaterial attach="material" color="black" factor={1} />
-      </Text>
+      
     </Canvas>
   );
 }
-
+let t = 0;
 const Camera: React.FC = () => {
   const ref = React.useRef()
   const v = new THREE.Vector3()
   useFrame((state, delta) => {
-    state.camera.position.lerp(v.set(state.mouse.x / 2, state.mouse.y / 2, 6), delta)
+    t = delta + t;
+    // state.camera.position.lerp(v.set(state.mouse.x / 2, state.mouse.y / 2, 6), delta)
+    state.camera.position.x = Math.sin(t) * 20;
+    state.camera.position.y = Math.cos(t) * 20;
+    state.camera.lookAt(v);
   })
 
   return (
-    <camera
+    <OrthographicCamera
       ref={ref}
       position={[10, 10,10]}
     />
@@ -91,7 +86,7 @@ const Light = () => {
   const ref = React.useRef()
  
   return (
-    <pointLight ref={ref} position={[-1, 10, 10]} color="red" intensity={86}/>
+    <pointLight ref={ref} position={[-1, 10, 10]} color="red" intensity={16}/>
   )
 }
 
@@ -100,7 +95,7 @@ function Bg() {
     <mesh scale={100}>
       <boxGeometry args={[1, 1, 1]} />
       <LayerMaterial side={THREE.BackSide}>
-        <Depth colorB={COLORS[3]} colorA={COLORS[4]} alpha={1} mode="normal" near={100} far={200} origin={[-100, 100, -100]} />
+        <Depth colorB={'#333'} colorA={'#222'} alpha={1} mode="normal" near={100} far={200} origin={[-100, 100, -100]} />
         <Noise mapping="local" type="white" scale={100} colorA="white" colorB="black" mode="subtract" alpha={0.2} />
       </LayerMaterial>
     </mesh>
