@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { createRoot } from 'react-dom/client';
 
-const RECENT_SKETCH = '5';
+const RECENT_SKETCH = '6';
 
 const Sketch = () => {
   const { id } = useParams();
