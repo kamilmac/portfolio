@@ -603,6 +603,16 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
+"@splinetool/loader@^0.9.42":
+  version "0.9.42"
+  resolved "https://registry.yarnpkg.com/@splinetool/loader/-/loader-0.9.42.tgz#28857cb1faeaeb92ddba8ca93d75c9ae08e023a0"
+  integrity sha512-mAuMaf/4Y0LaGt2tqElxpRjmbHeEiQXmI+KyS947dRWAHsajoPpHmS4V1ITGbOWHzwfdMBrIxwYH0iBKlisGRA==
+
+"@splinetool/r3f-spline@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@splinetool/r3f-spline/-/r3f-spline-1.0.1.tgz#8d6de6e0b8b9677d7a6c57a102cd7fa557d17358"
+  integrity sha512-lAVXna69B67L3W4S7laHy3vA6fuIDQmdmtYoZ/OjGLKUzwJRAU5xTJGrW95c+dnIZdDqTtCe/IBmKASfh5mppw==
+
 "@stitches/react@1.2.6":
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/@stitches/react/-/react-1.2.6.tgz#61f2a3d1110334ecd33bcb7463650127d42470cb"
