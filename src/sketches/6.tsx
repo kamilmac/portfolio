@@ -24,8 +24,6 @@ const WaveShaderMaterial = shaderMaterial(
   `,
   // Fragment Shader
   `
-    precision mediump float;
-    
     uniform vec3 uColor;
     uniform float uTime;
 
