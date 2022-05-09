@@ -23,6 +23,26 @@ const Sketch = () => {
   );
 };
 
+// const Shield = (props) => {
+//   const [ready, setReady] = React.useState(false)
+//   React.useEffect(() => {
+//     setTimeout(
+//       () => {
+//         setReady(true);
+//       },
+//       1000,
+//     );
+//   }, []);
+
+//   if (!ready) { return <h1>SHJIELDING</h1>; }
+//   return (
+//     <div>
+//       <h1>LETS GO</h1>
+//       { props.children }
+//     </div>
+//   )
+// }
+
 const Router = () => {
   return (
     <BrowserRouter>

@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import React from 'react'
 import { Canvas, extend, useFrame } from '@react-three/fiber'
-import { LayerMaterial, Depth, Fresnel, Noise, DebugLayerMaterial } from 'lamina'
 
 import { Sphere, Text, shaderMaterial } from '@react-three/drei'
 
@@ -52,24 +51,19 @@ const Plane = () => {
 const App: React.FC = () => {
   return (
     <Canvas
-      // gl={{ toneMapping: THREE.ACESFilmicToneMapping }}
       style={{
         height: '100vh',
       }}
-      // onCreated={state => {
-      //   state.gl.toneMapping =  THREE.ACESFilmicToneMapping;
-      //   console.log({state})
-      // }}
     >
       <Plane />
-      <Text
+      {/* <Text
         fontSize={0.2}
         letterSpacing={0.075}
         lineHeight={0.8}
         position={[0, 0, 2]}
       >
         Shader gradient
-      </Text>
+      </Text> */}
       <pointLight position={[0, 0, 100]} />
 
     </Canvas>

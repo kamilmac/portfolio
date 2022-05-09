@@ -1,20 +1,15 @@
-import * as THREE from 'three'
 import React from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { LayerMaterial, Depth, Fresnel, Noise, DebugLayerMaterial } from 'lamina'
+import { Canvas } from '@react-three/fiber'
+import { LayerMaterial, Depth, Fresnel, Noise } from 'lamina'
 
-import { Sphere, Text } from '@react-three/drei'
+import { Text } from '@react-three/drei'
 
 
 const App: React.FC = () => {
   return (
     <Canvas
-      // gl={{ toneMapping: THREE.ACESFilmicToneMapping }}
       style={{
         height: '100vh',
-      }}
-      // onCreated={state => {
-      //   state.gl.toneMapping =  THREE.ACESFilmicToneMapping;
       }}
     >
       <mesh>
@@ -53,7 +48,7 @@ const App: React.FC = () => {
           />
         </LayerMaterial>
       </mesh>
-      <Text
+      {/* <Text
         fontSize={0.4}
         letterSpacing={0.075}
         lineHeight={0.8}
@@ -62,7 +57,7 @@ const App: React.FC = () => {
         strokeColor="#ffffff"
       >
         Lamina #1
-      </Text>
+      </Text> */}
       <pointLight position={[10, 10, 20]} />
 
     </Canvas>

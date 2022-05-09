@@ -45,30 +45,31 @@ const Box: React.FC<JSX.IntrinsicElements['mesh']> = (props) => {
 
 const App: React.FC = () => {
   return (
-    <Canvas
-      style={{
-        height: '100vh',
-      }}
-    >
-      <Light />
-      {
-        boxes.map(b => (
-          <Box position={b.position} color={b.color}/>
-        ))
-      }
-      <Camera />
-      <Bg />
-      <Text
-        glyphGeometryDetail={32}
-        font="https://fonts.gstatic.com/s/merriweather/v21/u-4l0qyriQwlOrhSvowK_l5-eR7NWMf8.woff"
-        fontSize={2}
-        letterSpacing={-0.075}
-        lineHeight={0.8}
-        position={[0, 0, 3]}>
-        {'3'}
-        <MeshWobbleMaterial attach="material" color="black" factor={1} />
-      </Text>
-    </Canvas>
+    <div>
+      <Canvas
+        style={{
+          height: '100vh',
+        }}
+      >
+        <Light />
+        {
+          boxes.map(b => (
+            <Box position={b.position} color={b.color}/>
+          ))
+        }
+        <Camera />
+        <Bg />
+        {/* <Text
+          glyphGeometryDetail={32}
+          fontSize={2}
+          letterSpacing={-0.075}
+          lineHeight={0.8}
+          position={[0, 0, 3]}>
+          {'3'}
+          <MeshWobbleMaterial attach="material" color="black" factor={1} />
+        </Text> */}
+      </Canvas>
+    </div>
   );
 }
 
