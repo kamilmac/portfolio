@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/postprocessing": "^2.3.2",
     "@splinetool/loader": "^0.9.42",
     "@splinetool/r3f-spline": "^1.0.1",
     "lamina": "^1.1.15",
