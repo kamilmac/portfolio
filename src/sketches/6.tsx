@@ -56,10 +56,10 @@ const App: React.FC = () => {
       style={{
         height: '100vh',
       }}
-      onCreated={state => {
-        state.gl.toneMapping =  THREE.ACESFilmicToneMapping;
-        console.log({state})
-      }}
+      // onCreated={state => {
+      //   state.gl.toneMapping =  THREE.ACESFilmicToneMapping;
+      //   console.log({state})
+      // }}
     >
       <Plane />
       <Text

@@ -16,7 +16,7 @@ const Sketch = () => {
   const Component = React.lazy(() => import(`./sketches/${id || RECENT_SKETCH}.tsx`));
   return (
     <React.Suspense
-      fallback={<>...</>}
+      fallback={<>loading...</>}
     >
       <Component />
     </React.Suspense>

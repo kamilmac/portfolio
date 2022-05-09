@@ -6,7 +6,6 @@ import { LayerMaterial, Depth, Fresnel, Noise, DebugLayerMaterial } from 'lamina
 import { Sphere, Text } from '@react-three/drei'
 
 
-
 const App: React.FC = () => {
   return (
     <Canvas
@@ -14,9 +13,8 @@ const App: React.FC = () => {
       style={{
         height: '100vh',
       }}
-      onCreated={state => {
-        state.gl.toneMapping =  THREE.ACESFilmicToneMapping;
-        console.log({state})
+      // onCreated={state => {
+      //   state.gl.toneMapping =  THREE.ACESFilmicToneMapping;
       }}
     >
       <mesh>
