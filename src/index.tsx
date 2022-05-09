@@ -6,42 +6,52 @@ import {
   Route,
   useParams,
   Navigate,
+  Link,
 } from "react-router-dom";
 import { createRoot } from 'react-dom/client';
 
-const RECENT_SKETCH = '7';
+const RECENT_SKETCH = 7;
+let next = null;
+let prev = null;
+let page = null;
 
 const Sketch = () => {
   const { id } = useParams();
+  const [next, setNext] = React.useState(null)
+  const [prev, setPrev] = React.useState(null)
+
+  React.useEffect(() => {
+    console.log('computing next/prev', Number(id))
+    console.log(Number(id) >= RECENT_SKETCH ? null : Number(id)+1);
+    setNext(Number(id) >= RECENT_SKETCH ? null : Number(id)+1);
+    setPrev(Number(id) <= 1 ? null : Number(id)-1);
+    console.log({prev})
+    console.log({next})
+  }, [id])
+
   const Component = React.lazy(() => import(`./sketches/${id || RECENT_SKETCH}.tsx`));
   return (
-    <React.Suspense
-      fallback={<>loading...</>}
-    >
-      <Component />
-    </React.Suspense>
+    <>
+      <h1>
+        {
+          next &&
+          <Link to={`/${next}`}>Next</Link>
+        }
+      </h1>
+      <h1>
+        {
+          prev &&
+          <Link to={`/${prev}`}>Prev</Link>
+        }
+      </h1>
+      <React.Suspense
+        fallback={<>loading...</>}
+      >
+        <Component />
+      </React.Suspense>
+    </>
   );
 };
-
-// const Shield = (props) => {
-//   const [ready, setReady] = React.useState(false)
-//   React.useEffect(() => {
-//     setTimeout(
-//       () => {
-//         setReady(true);
-//       },
-//       1000,
-//     );
-//   }, []);
-
-//   if (!ready) { return <h1>SHJIELDING</h1>; }
-//   return (
-//     <div>
-//       <h1>LETS GO</h1>
-//       { props.children }
-//     </div>
-//   )
-// }
 
 const Router = () => {
   return (
