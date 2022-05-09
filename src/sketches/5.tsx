@@ -25,7 +25,7 @@ const App: React.FC = () => {
       </mesh>
       <mesh>
         <sphereGeometry args={[2, 64, 64]} />
-        <DebugLayerMaterial
+        <LayerMaterial
           color={'#718EFF'} lighting={'physical'} envMapIntensity={0.3}
           roughness={0.01}
           thickness={0.4}
@@ -53,7 +53,7 @@ const App: React.FC = () => {
             name={'noise'}
             mode={'subtract'}
           />
-        </DebugLayerMaterial>
+        </LayerMaterial>
       </mesh>
       <Text
         fontSize={0.4}
