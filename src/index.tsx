@@ -11,9 +11,6 @@ import {
 import { createRoot } from 'react-dom/client';
 
 const RECENT_SKETCH = 7;
-let next = null;
-let prev = null;
-let page = null;
 
 const Sketch = () => {
   const { id } = useParams();
@@ -21,35 +18,19 @@ const Sketch = () => {
   const [prev, setPrev] = React.useState(null)
 
   React.useEffect(() => {
-    console.log('computing next/prev', Number(id))
-    console.log(Number(id) >= RECENT_SKETCH ? null : Number(id)+1);
     setNext(Number(id) >= RECENT_SKETCH ? null : Number(id)+1);
     setPrev(Number(id) <= 1 ? null : Number(id)-1);
-    console.log({prev})
-    console.log({next})
   }, [id])
 
   const Component = React.lazy(() => import(`./sketches/${id || RECENT_SKETCH}.tsx`));
   return (
-    <>
-      <h1>
-        {
-          next &&
-          <Link to={`/${next}`}>Next</Link>
-        }
-      </h1>
-      <h1>
-        {
-          prev &&
-          <Link to={`/${prev}`}>Prev</Link>
-        }
-      </h1>
+    <Layout next={next} prev={prev}>
       <React.Suspense
         fallback={<>loading...</>}
       >
         <Component />
       </React.Suspense>
-    </>
+    </Layout>
   );
 };
 
@@ -70,3 +51,54 @@ root.render(
     <Router />
   </React.StrictMode>,
 );
+
+
+const Layout = ({prev, next, children}) => {
+  return (
+    <>
+      <div
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          padding: '20px 0',
+          bottom: 0,
+        }}
+      >
+        <div>
+          {
+            prev &&
+            <Link
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+                fontSize: '400%',
+                textTransform: 'uppercase',
+                userSelect: 'none',
+              }}
+              to={`/${prev}`}>👈</Link>
+          }
+        </div>
+        <div>
+          {
+            next &&
+            <Link 
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+                fontSize: '400%',
+                textTransform: 'uppercase',
+                userSelect: 'none',
+              }}
+              to={`/${next}`}>👉</Link>
+          }
+        </div>
+      </div>
+      {
+        children
+      }
+    </>
+  );
+};
