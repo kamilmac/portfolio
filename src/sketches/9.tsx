@@ -28,10 +28,11 @@ export default function App({ ...props }) {
         gl.shadowMap.type = THREE.PCFShadowMap
         gl.shadowMap.enabled = true;
       }}
-      shadows camera={{ position: [0, 0, 4], fov: 50 }}
     >
       <color attach="background" args={['#b3b6bb']} />
-      <OrbitControls />
+      <OrbitControls
+        target={[4.5,0,0]}
+      />
       {/* <pointLight
         name="Point Light"
         castShadow
@@ -45,8 +46,29 @@ export default function App({ ...props }) {
         position={[292.92, 305.86, 0]}
       /> */}
       <Model />
+      <pointLight
+        name="Point Light"
+        castShadow
+        intensity={4.2}
+        distance={2000}
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-camera-near={100}
+        shadow-camera-far={2500}
+        color="#dcfbfc"
+        position={[633.46, 351.86, -930.44]}
+      />
+      <PerspectiveCamera
+        name="Personal Camera"
+        makeDefault={true}
+        far={100000}
+        near={1}
+        fov={45}
+        up={[0, 1, 0]}
+        position={[10,5,7]}
+        rotation={[-2.38, 0.86, 2.51]}
+      />
       {/* <hemisphereLight name="Default Ambient Light" intensity={2.75} color="#eaeaea" position={[0, 1, 0]} /> */}
-
     </Canvas>
   )
 }
