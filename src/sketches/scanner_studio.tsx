@@ -6,6 +6,8 @@ import * as THREE from 'three'
 
 import React, { useRef } from 'react'
 import { useGLTF, useTexture } from '@react-three/drei'
+import { useControls } from 'leva'
+
 
 export function Model({ ...props }) {
   const group = useRef()
@@ -54,6 +56,7 @@ useGLTF.preload('/scanner-studio-export-glb.glb')
 
 
 const Dots = (props) => {
+  const { dotsColor } = useControls({ dotsColor: '#fff' })
   const dist = props.dist;
   const distSmall = props.dist*0.8;
   const dots = [
@@ -99,7 +102,7 @@ const Dots = (props) => {
           dots.map(d =>
             <mesh
               geometry={new THREE.CircleGeometry( props.dotSize, 62 )}
-              material={new THREE.MeshBasicMaterial( { color: 0xffff00 } )}
+              material={new THREE.MeshBasicMaterial( { color: dotsColor } )}
               position={[props.center[0] + d[0], props.center[1], props.center[2] + d[1]]}
               rotation={[-Math.PI / 2, 0, 0]}
             />
@@ -111,7 +114,7 @@ const Dots = (props) => {
           dotsSmall.map(d =>
             <mesh
               geometry={new THREE.CircleGeometry( props.dotSize*0.7, 62 )}
-              material={new THREE.MeshBasicMaterial( { color: 0xffff00 } )}
+              material={new THREE.MeshBasicMaterial( { color: dotsColor } )}
               position={[props.center[0] + d[0], props.center[1], props.center[2] + d[1]]}
               rotation={[-Math.PI / 2, 0, 0]}
             />

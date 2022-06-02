@@ -31,7 +31,7 @@ export default function App({ ...props }) {
     >
       <color attach="background" args={['#b3b6bb']} />
       <OrbitControls
-        target={[4.5,0,0]}
+        target={[4.5,0.3,0]}
       />
       {/* <pointLight
         name="Point Light"
