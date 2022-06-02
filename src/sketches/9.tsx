@@ -18,7 +18,7 @@ import { useControls } from 'leva'
 export default function App({ ...props }) {
   const { focalLength, bokehScale } = useControls({
     focalLength: {
-      value: 0.0013,
+      value: 0.0020,
       min: 0,
       max: 0.003,
       step: 0.0001,
