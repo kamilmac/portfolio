@@ -81,18 +81,18 @@ export default function App({ ...props }) {
 }
 
 
-const CAMvec = new THREE.Vector3(12,5,0);
+const CAMvec = new THREE.Vector3(10,3,0);
 let lerp = true;
 
 const MyCam = () => {
   const ref = React.useRef();
   useFrame(() => {
-    lerp && ref.current.position.lerp(CAMvec, 0.07)
+    lerp && ref.current.position.lerp(CAMvec, 0.075)
   });
   React.useEffect(() => {
     setTimeout(() => {
       lerp = false;
-    }, 1800)
+    }, 1900)
   }, [])
   return (
     <PerspectiveCamera
@@ -101,7 +101,7 @@ const MyCam = () => {
       makeDefault={true}
       far={100000}
       near={1}
-      fov={45}
+      fov={55}
       up={[0, 1, 0]}
       position={[200,100,0]}
       rotation={[-2.38, 0.86, 2.51]}
