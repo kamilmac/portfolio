@@ -57,7 +57,7 @@ useGLTF.preload('/scanner-studio-export-glb.glb')
 
 
 const Dots = (props) => {
-  const { dotsColor } = useControls({ dotsColor: '#fff' })
+  const { dotsColor } = useControls({ dotsColor: '#222' })
   const dist = props.dist;
   const distSmall = props.dist*0.8;
   const dots = [
