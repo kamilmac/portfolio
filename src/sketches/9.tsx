@@ -73,9 +73,9 @@ export default function App({ ...props }) {
      
       <MyCam />
       <hemisphereLight name="Default Ambient Light" intensity={2.75} color="#eaeaea" position={[0, 1, 0]} />
-      <EffectComposer>
+      {/* <EffectComposer>
         <DepthOfField focusDistance={0} focalLength={focalLength} bokehScale={bokehScale} height={512} />
-      </EffectComposer>
+      </EffectComposer> */}
     </Canvas>
   )
 }
@@ -87,13 +87,11 @@ let lerp = true;
 const MyCam = () => {
   const ref = React.useRef();
   useFrame(() => {
-    lerp && ref.current.position.lerp(CAMvec, 0.075)
-  });
-  React.useEffect(() => {
-    setTimeout(() => {
+    if (ref.current.position.x < 10.05) {
       lerp = false;
-    }, 1900)
-  }, [])
+    }
+    lerp && ref.current.position.lerp(CAMvec, 0.1)
+  });
   return (
     <PerspectiveCamera
       ref={ref}
@@ -103,7 +101,7 @@ const MyCam = () => {
       near={1}
       fov={55}
       up={[0, 1, 0]}
-      position={[200,100,0]}
+      position={[100,50,0]}
       rotation={[-2.38, 0.86, 2.51]}
     />
   )
