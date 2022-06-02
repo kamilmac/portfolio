@@ -16,7 +16,7 @@ export function Model({ ...props }) {
   bakedBase.flipY = false;
   bakedPlate.flipY = false;
   bakedScene.flipY = false;
-  // const bakedScene = new THREE.MeshBasicMaterial( { color: 0xffff00 } )}
+  
   return (
     <group ref={group} {...props} dispose={null}>
       <mesh
@@ -39,8 +39,85 @@ export function Model({ ...props }) {
         position={[4.36, 0.13, 0]}
         rotation={[0, Math.PI / 2, 0]}
       />
+      <group>
+        <Dots
+          center={[4.62, 0.151, 0]}
+          dist={0.68}
+          dotSize={0.06}
+        />  
+      </group>
     </group>
   )
 }
 
 useGLTF.preload('/scanner-studio-export-glb.glb')
+
+
+const Dots = (props) => {
+  const dist = props.dist;
+  const distSmall = props.dist*0.8;
+  const dots = [
+    [
+      0,
+      dist,
+    ],
+    [
+      dist,
+      0,
+    ],
+    [
+      -dist,
+      0,
+    ],
+    [
+      0,
+      -dist,
+    ],
+  ]
+  const dotsSmall = [
+    [
+      distSmall,
+      distSmall,
+    ],
+    [
+      distSmall,
+      -distSmall,
+    ],
+    [
+      -distSmall,
+      distSmall,
+    ],
+    [
+      -distSmall,
+      -distSmall,
+    ],
+  ]
+  return (
+    <>
+      <group>
+        {
+          dots.map(d =>
+            <mesh
+              geometry={new THREE.CircleGeometry( props.dotSize, 62 )}
+              material={new THREE.MeshBasicMaterial( { color: 0xffff00 } )}
+              position={[props.center[0] + d[0], props.center[1], props.center[2] + d[1]]}
+              rotation={[-Math.PI / 2, 0, 0]}
+            />
+          )
+        }
+      </group>
+      <group>
+        {
+          dotsSmall.map(d =>
+            <mesh
+              geometry={new THREE.CircleGeometry( props.dotSize*0.7, 62 )}
+              material={new THREE.MeshBasicMaterial( { color: 0xffff00 } )}
+              position={[props.center[0] + d[0], props.center[1], props.center[2] + d[1]]}
+              rotation={[-Math.PI / 2, 0, 0]}
+            />
+          )
+        }
+      </group>
+    </>
+  )
+}

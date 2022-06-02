@@ -58,6 +58,7 @@ export default function App({ ...props }) {
         color="#dcfbfc"
         position={[633.46, 351.86, -930.44]}
       />
+     
       <PerspectiveCamera
         name="Personal Camera"
         makeDefault={true}
@@ -65,7 +66,7 @@ export default function App({ ...props }) {
         near={1}
         fov={45}
         up={[0, 1, 0]}
-        position={[10,5,7]}
+        position={[15,5,0]}
         rotation={[-2.38, 0.86, 2.51]}
       />
       {/* <hemisphereLight name="Default Ambient Light" intensity={2.75} color="#eaeaea" position={[0, 1, 0]} /> */}

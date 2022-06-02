@@ -24,7 +24,7 @@ const Sketch = () => {
 
   const Component = React.lazy(() => import(`./sketches/${id || RECENT_SKETCH}.tsx`));
   return (
-    <Layout next={next} prev={prev}>
+    <Layout next={next} prev={prev} disableNav={id === '9'}>
       <React.Suspense
         fallback={<>loading...</>}
       >
@@ -53,9 +53,11 @@ root.render(
 );
 
 
-const Layout = ({prev, next, children}) => {
+const Layout = ({prev, next, children, disableNav }) => {
   return (
     <>
+    {
+      !disableNav &&
       <div
         style={{
           position: 'absolute',
@@ -96,6 +98,7 @@ const Layout = ({prev, next, children}) => {
           }
         </div>
       </div>
+    }
       {
         children
       }
