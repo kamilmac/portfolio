@@ -7,6 +7,7 @@ import { Sphere, Text, shaderMaterial, OrthographicCamera, PerspectiveCamera, Or
 import useSpline from '@splinetool/r3f-spline'
 import { EffectComposer, DepthOfField, Bloom, Noise, Vignette, BrightnessContrast } from '@react-three/postprocessing';
 import { Model } from './scanner_studio'
+import { useControls } from 'leva'
 
 
 // https://github.com/pmndrs/react-postprocessing/blob/master/api.md
@@ -15,6 +16,20 @@ import { Model } from './scanner_studio'
 // https://github.com/pmndrs/react-postprocessing
 
 export default function App({ ...props }) {
+  const { focalLength, bokehScale } = useControls({
+    focalLength: {
+      value: 0.0015,
+      min: 0,
+      max: 0.003,
+      step: 0.0001,
+    },
+    bokehScale: {
+      value: 20,
+      min: 0,
+      max: 50,
+      step: 1,
+    }
+  });
   // const { nodes, materials } = useSpline('https://prod.spline.design/8ojcY6ILxrKjzDdd/scene.splinecode')
   // console.log({materials, nodes})
   return (
@@ -67,6 +82,10 @@ export default function App({ ...props }) {
         rotation={[-2.38, 0.86, 2.51]}
       />
       <hemisphereLight name="Default Ambient Light" intensity={2.75} color="#eaeaea" position={[0, 1, 0]} />
+      <EffectComposer>
+        <DepthOfField focusDistance={0} focalLength={focalLength} bokehScale={bokehScale} height={512} />
+        <Noise opacity={0.02} />
+      </EffectComposer>
     </Canvas>
   )
 }
