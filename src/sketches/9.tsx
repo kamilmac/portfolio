@@ -87,12 +87,12 @@ let lerp = true;
 const MyCam = () => {
   const ref = React.useRef();
   useFrame(() => {
-    lerp && ref.current.position.lerp(CAMvec, 0.06)
+    lerp && ref.current.position.lerp(CAMvec, 0.07)
   });
   React.useEffect(() => {
     setTimeout(() => {
       lerp = false;
-    }, 2500)
+    }, 1800)
   }, [])
   return (
     <PerspectiveCamera
