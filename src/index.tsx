@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import { createRoot } from 'react-dom/client';
 
-const RECENT_SKETCH = 8;
+const RECENT_SKETCH = 9;
 
 const Sketch = () => {
   const { id } = useParams();
