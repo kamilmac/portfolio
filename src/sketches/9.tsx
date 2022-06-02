@@ -84,7 +84,6 @@ export default function App({ ...props }) {
       <hemisphereLight name="Default Ambient Light" intensity={2.75} color="#eaeaea" position={[0, 1, 0]} />
       <EffectComposer>
         <DepthOfField focusDistance={0} focalLength={focalLength} bokehScale={bokehScale} height={512} />
-        <Noise opacity={0.02} />
       </EffectComposer>
     </Canvas>
   )
