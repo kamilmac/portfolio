@@ -16,20 +16,20 @@ import { useControls } from 'leva'
 // https://github.com/pmndrs/react-postprocessing
 
 export default function App({ ...props }) {
-  const { focalLength, bokehScale } = useControls({
-    focalLength: {
-      value: 0.0020,
-      min: 0,
-      max: 0.003,
-      step: 0.0001,
-    },
-    bokehScale: {
-      value: 20,
-      min: 0,
-      max: 50,
-      step: 1,
-    }
-  });
+  // const { focalLength, bokehScale } = useControls({
+  //   focalLength: {
+  //     value: 0.0020,
+  //     min: 0,
+  //     max: 0.003,
+  //     step: 0.0001,
+  //   },
+  //   bokehScale: {
+  //     value: 20,
+  //     min: 0,
+  //     max: 50,
+  //     step: 1,
+  //   }
+  // });
   // const { nodes, materials } = useSpline('https://prod.spline.design/8ojcY6ILxrKjzDdd/scene.splinecode')
   // console.log({materials, nodes})
   return (
