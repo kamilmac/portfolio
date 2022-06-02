@@ -22,11 +22,9 @@ export default function App({ ...props }) {
       style={{
         height: '100vh',
       }}
-      onCreated={({ gl }) => {
-        gl.toneMapping = THREE.ACESFilmicToneMapping
-        gl.outputEncoding = THREE.sRGBEncoding
-        gl.shadowMap.type = THREE.PCFShadowMap
-        gl.shadowMap.enabled = true;
+      gl={{
+        toneMapping: THREE.LinearToneMapping,
+        outputEncoding: THREE.sRGBEncoding,
       }}
     >
       <color attach="background" args={['#b3b6bb']} />
@@ -48,14 +46,13 @@ export default function App({ ...props }) {
       <Model />
       <pointLight
         name="Point Light"
-        castShadow
-        intensity={4.2}
+        intensity={4}
         distance={2000}
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
         shadow-camera-near={100}
         shadow-camera-far={2500}
-        color="#dcfbfc"
+        color="#fff"
         position={[633.46, 351.86, -930.44]}
       />
      
@@ -69,7 +66,7 @@ export default function App({ ...props }) {
         position={[15,5,0]}
         rotation={[-2.38, 0.86, 2.51]}
       />
-      {/* <hemisphereLight name="Default Ambient Light" intensity={2.75} color="#eaeaea" position={[0, 1, 0]} /> */}
+      <hemisphereLight name="Default Ambient Light" intensity={2.75} color="#eaeaea" position={[0, 1, 0]} />
     </Canvas>
   )
 }

@@ -11,19 +11,20 @@ import { useControls } from 'leva'
 
 export function Model({ ...props }) {
   const group = useRef()
+
   const { nodes, materials } = useGLTF('/scanner-studio-export-glb.glb')
   const bakedBase = useTexture("/scanner-base-material-sub.jpg")
   const bakedPlate = useTexture("/scanner-plate-material-sub.jpg")
   const bakedScene = useTexture("/scene-material-sub.jpg")
+  
   bakedBase.flipY = false;
   bakedPlate.flipY = false;
   bakedScene.flipY = false;
-  
   return (
     <group ref={group} {...props} dispose={null}>
       <mesh
         geometry={nodes.Scene_1.geometry}
-        // material={materials.Backdrop}
+        // material={mat}
         material-map={bakedScene}
         scale={10.43}
       />
@@ -36,7 +37,7 @@ export function Model({ ...props }) {
         rotation={[0, Math.PI / 2, 0]} />
       <mesh
         geometry={nodes.Scanner_plate.geometry}
-        // material={materials['Scanner plate']}
+        // material={mat}
         material-map={bakedPlate}
         position={[4.36, 0.13, 0]}
         rotation={[0, Math.PI / 2, 0]}
