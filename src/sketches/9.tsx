@@ -61,7 +61,7 @@ export default function App({ ...props }) {
       <Model />
       <pointLight
         name="Point Light"
-        intensity={4}
+        intensity={1}
         distance={2000}
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
@@ -73,9 +73,12 @@ export default function App({ ...props }) {
      
       <MyCam />
       <hemisphereLight name="Default Ambient Light" intensity={2.75} color="#eaeaea" position={[0, 1, 0]} />
-      {/* <EffectComposer>
-        <DepthOfField focusDistance={0} focalLength={focalLength} bokehScale={bokehScale} height={512} />
-      </EffectComposer> */}
+      <EffectComposer>
+        <BrightnessContrast
+          brightness={.015}
+          contrast={.025}
+        />
+      </EffectComposer>
     </Canvas>
   )
 }
@@ -105,4 +108,4 @@ const MyCam = () => {
       rotation={[-2.38, 0.86, 2.51]}
     />
   )
-}
+} 

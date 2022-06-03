@@ -7,6 +7,7 @@ import * as THREE from 'three'
 import React, { useRef } from 'react'
 import { useGLTF, useTexture } from '@react-three/drei'
 import { useControls } from 'leva'
+import { LayerMaterial, Depth, Texture, DebugLayerMaterial } from 'lamina'
 
 
 export function Model({ ...props }) {
@@ -29,22 +30,36 @@ export function Model({ ...props }) {
         scale={10.43}
       />
       <mesh
-        geometry={nodes.Scanner_base.geometry}
-        // material={materials['Scanner base']}
-        // material={new THREE.MeshBasicMaterial( { color: 0xffff00 } )}
-        material-map={bakedBase}
         position={[4.36, 0.05, 0]}
-        rotation={[0, Math.PI / 2, 0]} />
+        rotation={[0, Math.PI / 2, 0]}
+        castShadow
+      >
+        <bufferGeometry {...nodes.Scanner_base.geometry} />
+        <meshBasicMaterial map={bakedBase} />
+      </mesh>
       <mesh
-        geometry={nodes.Scanner_plate.geometry}
-        // material={mat}
-        material-map={bakedPlate}
         position={[4.36, 0.13, 0]}
         rotation={[0, Math.PI / 2, 0]}
-      />
+      >
+        <bufferGeometry {...nodes.Scanner_plate.geometry} />
+        {/* <meshBasicMaterial map={bakedPlate} /> */}
+        <LayerMaterial
+          color="#000000"
+          lighting="phong"
+          shininess={300}
+          reflectivity={1}
+          emissive="#000"
+          specular="#111111"
+        >
+          <Texture
+            map={bakedPlate}
+            blendMode="multiply"
+          />
+        </LayerMaterial>
+      </mesh>
       <group>
         <Dots
-          center={[4.62, 0.151, 0]}
+          center={[4.62, 0.155, 0]}
           dist={0.68}
           dotSize={0.06}
         />  
