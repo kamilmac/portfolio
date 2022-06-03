@@ -42,14 +42,14 @@ export function Model({ ...props }) {
         rotation={[0, Math.PI / 2, 0]}
       >
         <bufferGeometry {...nodes.Scanner_plate.geometry} />
-        {/* <meshBasicMaterial map={bakedPlate} /> */}
+        <meshBasicMaterial map={bakedPlate} />
         <LayerMaterial
-          color="#000000"
           lighting="phong"
           shininess={300}
           reflectivity={1}
-          emissive="#000"
-          specular="#111111"
+          emissive="0x000"
+          aoMapIntensity={0}
+          color="0x333333"
         >
           <Texture
             map={bakedPlate}

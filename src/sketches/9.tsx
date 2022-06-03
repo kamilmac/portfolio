@@ -69,6 +69,8 @@ export default function App({ ...props }) {
         shadow-camera-far={2500}
         color="#fff"
         position={[633.46, 351.86, -930.44]}
+        castShadow
+
       />
      
       <MyCam />
