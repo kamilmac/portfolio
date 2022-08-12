@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import { createRoot } from 'react-dom/client';
 
-const RECENT_SKETCH = 9;
+const RECENT_SKETCH = 10;
 
 const Sketch = () => {
   const { id } = useParams();
@@ -24,7 +24,7 @@ const Sketch = () => {
 
   const Component = React.lazy(() => import(`./sketches/${id || RECENT_SKETCH}.tsx`));
   return (
-    <Layout next={next} prev={prev} disableNav={id === '9'}>
+    <Layout next={next} prev={prev} disableNav={true}>
       <React.Suspense
         fallback={<>loading...</>}
       >
