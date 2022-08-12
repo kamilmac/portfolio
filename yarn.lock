@@ -561,6 +561,14 @@
   resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.4.4.tgz#97c69881788e624d7cc68d4385fdaa9b5fd20642"
   integrity sha512-KpxKt/D//q/t/6FBcde/RE36LKp8PpWu7kFEMLwpzMGl9RpcexunmYOQJWwmJWtkQjgE1YRr7DzBMryz6La1cQ==
 
+"@react-three/csg@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@react-three/csg/-/csg-1.1.1.tgz#f1b8fd967a542ba0fe5e17113f4bde82634e7b32"
+  integrity sha512-l1eJz3eNjyL906I0lUxE32Vv7eoPytIKBTQsktYEA4ZhGHvDxX8m7lE69uh/B0KpeWxorwXU4/8k0Ermo7Aq5A==
+  dependencies:
+    react-merge-refs "^1.1.0"
+    three-mesh-bvh "^0.5.14"
+
 "@react-three/drei@^9.4.2":
   version "9.11.3"
   resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.11.3.tgz#b4205a2b54372507b5cde81cef5f50c812d643bf"
@@ -1568,6 +1576,11 @@ three-mesh-bvh@^0.5.10:
   version "0.5.11"
   resolved "https://registry.yarnpkg.com/three-mesh-bvh/-/three-mesh-bvh-0.5.11.tgz#6c64f80557c00d3d2bb85667444787449ae352cb"
   integrity sha512-blVHefpW+aRqB7XZcL8MEJrVwGoX9COqCgGccgzhLoPwLEdIWz4bs2FGdLECIpAEHHThL6nQodQ2S8WAs/H3CA==
+
+three-mesh-bvh@^0.5.14:
+  version "0.5.15"
+  resolved "https://registry.yarnpkg.com/three-mesh-bvh/-/three-mesh-bvh-0.5.15.tgz#bcf681d784d8988618344a5e11e7ded7e76ee86a"
+  integrity sha512-jxE5iGjcoEMiyxUs7hMeZL6jBXBz9973ilqhXPhKlA1f7eitjIxRTtu7UWVQy+PhxXTsknmPzWmN5c+uAa/anA==
 
 three-stdlib@^2.10.1, three-stdlib@^2.8.11:
   version "2.10.1"

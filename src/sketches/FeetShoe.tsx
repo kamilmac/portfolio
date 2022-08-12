@@ -21,7 +21,7 @@ export function Model(props) {
   console.log(nodes)
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.left.geometry} position={[0.05,-0.02,0]}>
+      <mesh geometry={nodes.left.geometry} position={[0.05,-0.02,0]} castShadow receiveShadow>
         <LayerMaterial lighting="basic">
           <Depth
             near={0.4854}
@@ -50,38 +50,42 @@ export function Model(props) {
           />
         </LayerMaterial>
       </mesh>
-      <Divider />
-      <group position={[0.04, 0.04, -0.15]} rotation={[Math.PI, Math.PI / 2, 0]} scale={[-0.17, -0.17, -0.18]}>
-        <mesh geometry={nodes.shoe_1.geometry}>
-          <ShoeMaterial />
-        </mesh>
-        <mesh geometry={nodes.shoe_2.geometry}>
-          <ShoeMaterial />
-        </mesh>
-        <mesh geometry={nodes.shoe_3.geometry}>
-          <ShoeMaterial />
-        </mesh>
-        <mesh geometry={nodes.shoe_4.geometry}>
-          <ShoeMaterial />
-        </mesh>
-        <mesh geometry={nodes.shoe_5.geometry}>
-          <ShoeMaterial />
-        </mesh>
-        <mesh geometry={nodes.shoe_6.geometry}>
-          <ShoeMaterial />
-        </mesh>
-        <mesh geometry={nodes.shoe_7.geometry}>
-          <ShoeMaterial />
-        </mesh>
-        <mesh geometry={nodes.shoe_8.geometry}>
-          <ShoeMaterial />
-        </mesh>
-      </group>
+      {/* <Divider /> */}
+      <Shoe nodes={nodes} />
     </group>
   )
 }
 
 useGLTF.preload('/feetShoe.gltf')
+
+
+const Shoe = ({ nodes }) =>
+  <group position={[0.04, 0.04, -0.15]} rotation={[Math.PI, Math.PI / 2, 0]} scale={[-0.17, -0.17, -0.18]} castShadow receiveShadow>
+    <mesh material={material} geometry={nodes.shoe_1.geometry}>
+    </mesh>
+    <mesh material={material} geometry={nodes.shoe_2.geometry}>
+    </mesh>
+    <mesh material={material} geometry={nodes.shoe_3.geometry}>
+    </mesh>
+    <mesh material={material} geometry={nodes.shoe_4.geometry}>
+    </mesh>
+    <mesh geometry={nodes.shoe_5.geometry}>
+      <ShoeMaterial />
+    </mesh>
+    <mesh material={material} geometry={nodes.shoe_6.geometry}>
+    </mesh>
+    <mesh material={material} geometry={nodes.shoe_7.geometry}>
+    </mesh>
+    <mesh material={material} geometry={nodes.shoe_8.geometry}>
+    </mesh>
+  </group>
+
+const material = new THREE.MeshPhysicalMaterial({
+  color: new THREE.Color('#eee').convertSRGBToLinear(),
+  roughness: 0,
+  clearcoat: 1,
+  clearcoatRoughness: 0,
+})
 
 
 const ShoeMaterial = () => {
@@ -115,13 +119,26 @@ const ShoeMaterial = () => {
 }
 
 const Divider = () => {
+  const ref = React.useRef();
+  useFrame(({ clock }) => {
+    ref.current.position.z = Math.sin(clock.elapsedTime)*0.2 -0.15;
+  })
   return (
     <mesh
+      ref={ref}
       scale={1}
       rotation={[0,Math.PI * 0.5,0]}
       position={[0.05,0.03,-0.07]}
+      castShadow receiveShadow
     >
       <boxGeometry args={[0.02, 0.3, 0.3]} />
+      <meshPhysicalMaterial
+        color={'hotpink'}
+        transmission={1}
+        thickness={0.4}
+        roughness={1.8}
+        reflectivity={0.2}
+      />
     </mesh>
   );
 }
