@@ -50,7 +50,7 @@ export function Model(props) {
           />
         </LayerMaterial>
       </mesh>
-      {/* <Divider /> */}
+      <Divider />
       <Shoe nodes={nodes} />
     </group>
   )
@@ -63,11 +63,14 @@ const Shoe = ({ nodes }) =>
   <group position={[0.04, 0.04, -0.15]} rotation={[Math.PI, Math.PI / 2, 0]} scale={[-0.17, -0.17, -0.18]} castShadow receiveShadow>
     <mesh material={material} geometry={nodes.shoe_1.geometry}>
     </mesh>
-    <mesh material={material} geometry={nodes.shoe_2.geometry}>
+    <mesh geometry={nodes.shoe_2.geometry}>
+      <ShoeMaterial />
     </mesh>
-    <mesh material={material} geometry={nodes.shoe_3.geometry}>
+    <mesh geometry={nodes.shoe_3.geometry}>
+      <ShoeMaterial />
     </mesh>
-    <mesh material={material} geometry={nodes.shoe_4.geometry}>
+    <mesh geometry={nodes.shoe_4.geometry}>
+      <ShoeMaterial />
     </mesh>
     <mesh geometry={nodes.shoe_5.geometry}>
       <ShoeMaterial />
@@ -81,10 +84,10 @@ const Shoe = ({ nodes }) =>
   </group>
 
 const material = new THREE.MeshPhysicalMaterial({
-  color: new THREE.Color('#eee').convertSRGBToLinear(),
-  roughness: 0,
+  color: new THREE.Color('#ccc').convertSRGBToLinear(),
+  roughness: 0.2,
   clearcoat: 1,
-  clearcoatRoughness: 0,
+  clearcoatRoughness: 1,
 })
 
 
@@ -96,10 +99,10 @@ const ShoeMaterial = () => {
         far={0.7661999999999932}
         origin={[-0.4920000000000004, 0.4250000000000003, 0]}
         colorA={'#3ff233'}
-        colorB={'#0079f9'}
+        colorB={'#black'}
       />
       <Fresnel
-        color={'red'}
+        color={'hotpink'}
         mode={'screen'} 
       />
       <Noise
