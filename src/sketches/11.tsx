@@ -5,7 +5,7 @@ import { Canvas, extend, useFrame } from '@react-three/fiber'
 
 import { Sphere, Text, shaderMaterial, OrthographicCamera, PerspectiveCamera, OrbitControls } from '@react-three/drei'
 import useSpline from '@splinetool/r3f-spline'
-import { EffectComposer, Noise } from '@react-three/postprocessing'
+import { Bloom, DepthOfField, EffectComposer, Noise } from '@react-three/postprocessing'
 
 import { useGLTF } from '@react-three/drei'
 import { Depth, Fresnel, LayerMaterial } from 'lamina'
@@ -63,10 +63,11 @@ function Model(props) {
       <mesh
         ref={ref}
         geometry={nodes.InsidePath.geometry}
+        receiveShadow castShadow
       >
         <Mat1 />
       </mesh>
-      <mesh geometry={nodes.OutsidePath.geometry}>
+      <mesh geometry={nodes.OutsidePath.geometry} receiveShadow castShadow>
         <Mat2 />
       </mesh>
     </group>
@@ -89,6 +90,7 @@ const Mat2 = () => {
       roughness={0.4}
       transmission={2}
       thickness={1.5}
+      flatShading={false}
     />
   );
 }
