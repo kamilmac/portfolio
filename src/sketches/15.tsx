@@ -105,7 +105,7 @@ export default function App() {
         near={1}
         fov={55}
         up={[0, 1, 0]}
-        position={[-5,3,0]}
+        position={[-5,0.8,0]}
         rotation={[-2.38, 0.86, 2.51]}
       />
     </Canvas>
