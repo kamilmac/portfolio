@@ -1,10 +1,9 @@
 import * as THREE from 'three'
 import React from 'react'
-import { Sphere, useGLTF, shaderMaterial, PerspectiveCamera, OrbitControls, Environment, useTexture } from '@react-three/drei'
-import { Canvas, extend, useFrame, useLoader, useThree } from '@react-three/fiber'
+import { useGLTF, PerspectiveCamera, OrbitControls, useTexture  } from '@react-three/drei'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import { Depth, Fresnel, LayerMaterial, Noise, Texture } from 'lamina'
-
+import { Depth, Fresnel, LayerMaterial, Noise } from 'lamina'
 
 const SCENE = {
   "world_from_foot":   {
@@ -36,7 +35,9 @@ const createMatrix = (arr) => {
   return m;
 }
 
+
 useGLTF.preload('/scanner-studio-export-glb.glb')
+
 
 export default function App() {
   return (
@@ -89,8 +90,14 @@ export default function App() {
       <hemisphereLight name="Default Ambient Light" intensity={1.0} color="#eaeaea" position={[0, 1, 0]} />
       <Scanner />
       <OrbitControls
-        maxPolarAngle={Math.PI/2}
+        minPolarAngle={0.5}
+        maxPolarAngle={1.5}
+        rotateSpeed={0.6}
+        autoRotate={true}
+        autoRotateSpeed={0.5}
+        enableDamping
       />
+      
       <PerspectiveCamera
         name="Personal Camera"
         makeDefault={true}
@@ -104,72 +111,26 @@ export default function App() {
     </Canvas>
   );
 }
-   
-
 
 const Foot = (props) => {
   const obj = useLoader(OBJLoader, props.obj);
-  const ref = React.useRef();
-  const ref2 = React.useRef();
-  
+
   const geometryLeft = React.useMemo(() => {
     let g = [];
     obj.traverse((c) => { if (c.type === "Mesh") { g.push(c.geometry); } });
     return g;
   }, [ obj ]);
 
-  const Material = React.useMemo(() =>
-    () =>
-      <LayerMaterial
-        color="white"
-        lighting="physical"
-        roughness={1}
-        transmission={0}
-      >
-      </LayerMaterial>
-    ,
-    [],
-  );
-  useFrame(({ clock }) => {
-    ref.current.intensity = Math.sin(clock.elapsedTime*4)/ 2 + 1;
-    ref2.current.scale = (Math.sin(clock.elapsedTime)+ 8) ;
-  })
   return (
     <>
       {
-        geometryLeft.map(g => 
+        geometryLeft.map(g =>
           <mesh geometry={g}
             // matrix={SCENE.world_from_foot.left}
             matrixAutoUpdate={false}
             matrix={createMatrix(props.tMatrix)}
           >
-            <LayerMaterial lighting="basic">
-              <Depth
-                near={0.4854}
-                far={0.7661999999999932}
-                origin={[-0.4920000000000004, 0.4250000000000003, 0]}
-                colorA={'#3ff233'}
-                colorB={'#0079f9'}
-              />
-              <Fresnel
-                ref={ref}
-                color={'red'}
-                mode={'screen'} 
-              />
-              <Noise
-                ref={ref2}
-                colorA={'#4d4433'}
-                colorB={'#a8a8a8'}
-                colorC={'#fefefe'}
-                colorD={'#fefefe'}
-                alpha={0.14}
-                // scale={1000}
-                offset={[0, 0, 0]}
-                name={'noise'}
-                mode={'multiply'}
-                type={'cell'}
-              />
-            </LayerMaterial>
+            <Material />
           </mesh>
         )
       }
@@ -177,6 +138,45 @@ const Foot = (props) => {
   );
 }
 
+
+const Material = () => {
+  const ref = React.useRef();
+  const ref2 = React.useRef();
+  
+  useFrame(({ clock }) => {
+    // ref.current.intensity = Math.sin(clock.elapsedTime*4)/ 2 + 1;
+    ref2.current.near = (Math.cos(clock.elapsedTime)) / 4;
+    ref2.current.far = 1 - ((Math.cos(clock.elapsedTime)) / 4);
+  })
+
+  return (
+    <LayerMaterial lighting="basic">
+      <Depth
+        ref={ref2}
+        near={0.4854}
+        far={0.7661999999999932}
+        origin={[-0.4920000000000004, 0.4250000000000003, 0]}
+        colorA={'#3ff233'}
+        colorB={'#0079f9'}
+      />
+      <Fresnel
+        color={'red'}
+        mode={'screen'} 
+      />
+      <Noise
+        colorA={'#4d4433'}
+        colorB={'#a8a8a8'}
+        colorC={'#fefefe'}
+        colorD={'#fefefe'}
+        alpha={0.14}
+        offset={[0, 0, 0]}
+        name={'noise'}
+        mode={'multiply'}
+        type={'cell'}
+      />
+    </LayerMaterial>
+  );
+}
 
 
 
@@ -258,8 +258,6 @@ const Ground = (props) => {
 
 
 const Scanner = (props) => {
-  const group = React.useRef()
-
   const { nodes, materials } = useGLTF('/scene/scanner.glb')
   const bakedBase = useTexture("/scene/bakeBase.png")
   const bakedPlate = useTexture("/scene/bakePlate.png")
@@ -270,7 +268,7 @@ const Scanner = (props) => {
   bakedScene.flipY = false;
 
   return (
-    <group ref={group} dispose={null}>
+    <group  dispose={null}>
       <mesh
         geometry={nodes.ground.geometry}
         // material={mat}
