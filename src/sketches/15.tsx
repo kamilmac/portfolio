@@ -38,8 +38,6 @@ const createMatrix = (arr) => {
 
 useGLTF.preload('/scanner-studio-export-glb.glb')
 
-
-
 export default function App() {
   return (
     <Canvas
@@ -65,7 +63,7 @@ export default function App() {
 
       /> */}
       <group
-        position={[4.65,0.16,0.0]}
+        position={[0.2,0.143,0.0]}
         rotation={[-Math.PI/2,0,Math.PI/2]}
         scale={4}
       >
@@ -81,11 +79,12 @@ export default function App() {
           tMatrix={SCENE.world_from_ground}
         />
       </group>
-      <Environment 
+      {/* <Environment 
         background={false}
         files={'royal_esplanade_1k.hdr'}
         path={'/'}
-      />
+      /> */}
+      <hemisphereLight name="Default Ambient Light" intensity={1.0} color="#eaeaea" position={[0, 1, 0]} />
       <Scanner />
       <OrbitControls
         maxPolarAngle={Math.PI/2}
@@ -97,7 +96,7 @@ export default function App() {
         near={1}
         fov={55}
         up={[0, 1, 0]}
-        position={[13,4,0]}
+        position={[-5,3,0]}
         rotation={[-2.38, 0.86, 2.51]}
       />
     </Canvas>
@@ -108,6 +107,8 @@ export default function App() {
 
 const Foot = (props) => {
   const obj = useLoader(OBJLoader, props.obj);
+  const ref = React.useRef();
+  const ref2 = React.useRef();
   
   const geometryLeft = React.useMemo(() => {
     let g = [];
@@ -120,14 +121,17 @@ const Foot = (props) => {
       <LayerMaterial
         color="white"
         lighting="physical"
-        roughness={0.1}
+        roughness={1}
         transmission={0}
       >
       </LayerMaterial>
     ,
     [],
   );
-
+  useFrame(({ clock }) => {
+    ref.current.intensity = Math.sin(clock.elapsedTime*4)/ 2 + 1;
+    ref2.current.scale = (Math.sin(clock.elapsedTime)+ 8) ;
+  })
   return (
     <>
       {
@@ -137,7 +141,33 @@ const Foot = (props) => {
             matrixAutoUpdate={false}
             matrix={createMatrix(props.tMatrix)}
           >
-            <Material />
+            <LayerMaterial lighting="basic">
+              <Depth
+                near={0.4854}
+                far={0.7661999999999932}
+                origin={[-0.4920000000000004, 0.4250000000000003, 0]}
+                colorA={'#3ff233'}
+                colorB={'#0079f9'}
+              />
+              <Fresnel
+                ref={ref}
+                color={'red'}
+                mode={'screen'} 
+              />
+              <Noise
+                ref={ref2}
+                colorA={'#4d4433'}
+                colorB={'#a8a8a8'}
+                colorC={'#fefefe'}
+                colorD={'#fefefe'}
+                alpha={0.14}
+                // scale={1000}
+                offset={[0, 0, 0]}
+                name={'noise'}
+                mode={'multiply'}
+                type={'cell'}
+              />
+            </LayerMaterial>
           </mesh>
         )
       }
@@ -156,12 +186,12 @@ const Ground = (props) => {
       uniform sampler2D u_texture; 
       varying vec2 vUv;
 
-      vec4 SHADOW_COLOR = vec4(0.0, 0.0, 0.0, 1.0);
+      vec4 SHADOW_COLOR = vec4(0.0, 0.0, 0.0, 0.5);
       float BORDER = 0.1;
 
       float left = 1.0;
       float right = 1.0;
-      vec4 pattern_color = vec4(0.0, 0.0, 0.0, 1.0);
+      vec4 pattern_color = vec4(0.0, 0.0, 0.0, 0.35);
 
       void main() {
         vec4 tex = texture2D(u_texture, vUv);
@@ -228,36 +258,36 @@ const Ground = (props) => {
 const Scanner = (props) => {
   const group = React.useRef()
 
-  const { nodes, materials } = useGLTF('/scanner-studio-export-glb.glb')
-  const bakedBase = useTexture("/scanner-base-material-sub.jpg")
-  const bakedPlate = useTexture("/scanner-plate-material-sub.jpg")
-  const bakedScene = useTexture("/scene-material-sub.jpg")
+  const { nodes, materials } = useGLTF('/scene/scanner.glb')
+  const bakedBase = useTexture("/scene/bakeBase.png")
+  const bakedPlate = useTexture("/scene/bakePlate.png")
+  const bakedScene = useTexture("/scene/bakeGround.png")
   
   bakedBase.flipY = false;
-  // bakedPlate.flipY = false;
+  bakedPlate.flipY = false;
   bakedScene.flipY = false;
 
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} dispose={null}>
       <mesh
-        geometry={nodes.Scene_1.geometry}
+        geometry={nodes.ground.geometry}
         // material={mat}
         material-map={bakedScene}
-        scale={10.43}
+        scale={3}
       />
       <mesh
-        position={[4.36, 0.05, 0]}
-        rotation={[0, Math.PI / 2, 0]}
+        // position={[4.36, 0.05, 0]}
+        // rotation={[0, Math.PI / 2, 0]}
         castShadow
       >
-        <bufferGeometry {...nodes.Scanner_base.geometry} />
+        <bufferGeometry {...nodes.base.geometry} />
         <meshBasicMaterial map={bakedBase} />
       </mesh>
       <mesh
-        position={[4.36, 0.13, 0]}
-        rotation={[0, Math.PI / 2, 0]}
+        // position={[4.36, 0.13, 0]}
+        // rotation={[0, Math.PI / 2, 0]}
       >
-        <bufferGeometry {...nodes.Scanner_plate.geometry} />
+        <bufferGeometry {...nodes.plate.geometry} />
         <meshBasicMaterial map={bakedPlate} />
       </mesh>
       {/* <group>
