@@ -11,6 +11,7 @@
     "@react-three/csg": "^1.1.1",
     "@react-three/drei": "^9.4.2",
     "@react-three/fiber": "^8.0.11",
+    "@react-three/gpu-pathtracer": "^0.0.3",
     "@react-three/postprocessing": "^2.3.2",
     "@splinetool/loader": "^0.9.63",
     "@splinetool/r3f-spline": "^1.0.1",
