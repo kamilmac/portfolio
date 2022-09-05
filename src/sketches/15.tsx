@@ -41,13 +41,15 @@ useGLTF.preload('/scanner-studio-export-glb.glb')
 export default function App() {
   return (
     <Canvas
-    style={{
-      height: '100vh',
-    }}
-    gl={{
-      toneMapping: THREE.LinearToneMapping,
-      outputEncoding: THREE.sRGBEncoding,
-    }}
+      style={{
+        height: '100vh',
+        // background: '#fff',
+        background: 'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(180,180,180,1) 100%)',
+      }}
+      gl={{
+        toneMapping: THREE.LinearToneMapping,
+        outputEncoding: THREE.sRGBEncoding,
+      }}
     >
       {/* <pointLight
         name="Point Light"
