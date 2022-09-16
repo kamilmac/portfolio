@@ -258,37 +258,33 @@ const Ground = (props) => {
 
 
 const Scanner = (props) => {
-  const { nodes, materials } = useGLTF('/scene/scanner.glb')
-  const bakedBase = useTexture("/scene/bakeBase.png")
-  const bakedPlate = useTexture("/scene/bakePlate.png")
-  const bakedScene = useTexture("/scene/bakeGround.png")
+  const { nodes, materials } = useGLTF('/scene/scanner-mat.glb')
   
-  bakedBase.flipY = false;
-  bakedPlate.flipY = false;
-  bakedScene.flipY = false;
+  console.log({nodes});
+  console.log({materials});
 
   return (
     <group  dispose={null}>
       <mesh
         geometry={nodes.ground.geometry}
-        // material={mat}
-        material-map={bakedScene}
-        scale={3}
-      />
+        // material={materials['ALL.001']}
+      >
+        <meshBasicMaterial aoMap={materials['ALL.001'].aoMap} color={'white'} aoMapIntensity={1}/>
+      </mesh>
       <mesh
         // position={[4.36, 0.05, 0]}
         // rotation={[0, Math.PI / 2, 0]}
         castShadow
       >
         <bufferGeometry {...nodes.base.geometry} />
-        <meshBasicMaterial map={bakedBase} />
+        <meshBasicMaterial aoMap={materials['ALL.002'].aoMap} color={'lightGrey'}  aoMapIntensity={1}/>
       </mesh>
       <mesh
         // position={[4.36, 0.13, 0]}
         // rotation={[0, Math.PI / 2, 0]}
       >
         <bufferGeometry {...nodes.plate.geometry} />
-        <meshBasicMaterial map={bakedPlate} />
+        <meshBasicMaterial aoMap={materials['ALL'].aoMap} color={'white'}  aoMapIntensity={1}/>
       </mesh>
       {/* <group>
         <Dots
