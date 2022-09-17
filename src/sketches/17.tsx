@@ -108,7 +108,7 @@ export default function App() {
           maxPolarAngle={1.5}
           rotateSpeed={0.6}
           autoRotate={true}
-          autoRotateSpeed={0.3}
+          autoRotateSpeed={0.18}
           enableDamping
         />
         
@@ -119,7 +119,7 @@ export default function App() {
           near={1}
           fov={60}
           up={[0, 1, 0]}
-          position={[4, 3, 3]}
+          position={[5, 2, 1]}
           rotation={[-2.38, 0.86, 2.51]}
         />
       </Canvas>
@@ -302,7 +302,7 @@ const Instructions = () => {
           paddingBottom: 24,
         }}
       >
-        Please take of your shoes.
+        Please take off your shoes.
       </div>
       <div>
         <ShoesAnimation />
@@ -334,24 +334,20 @@ const Hud = (props) => {
      <div
         style={{
           position: 'absolute',
-          left: 32,
-          bottom: 32,
+          left: 148,
+          bottom: 148,
           width: 200,
-          height: 200,
           padding: 32,
           borderRadius: 12,
           fontSize: 24,
           margin: '0 auto',
           color: 'white',
-          backdropFilter: 'blur(4px)',
-          background: 'linear-gradient(45deg, rgba(145,121,249,0.3) 0%, rgba(36,118,243,0.3) 100%)',
-          overflow: 'visible',
         }}
       >
         Take of your shoes.
       </div> 
       <svg width={w} height={h}>
-        <path  stroke-dasharray="4"  stroke="#fff" strokeWidth="2" fill="none" d={`M ${32} ${h-164} H ${pos[0] || 0} V ${h-pos[1]+64 || 0}`}/>
+        <path  strokeDasharray="6" strokeLinecap="round" stroke="#eee" strokeWidth="2" fill="none" d={`M ${148} ${h-164} H ${pos[0] || 0} V ${h-pos[1]+64 || 0}`}/>
       </svg>
     </div>
   );
