@@ -351,7 +351,7 @@ const Hud = (props) => {
         Take of your shoes.
       </div> 
       <svg width={w} height={h}>
-        <path  stroke-dasharray="4"  stroke="#fff" strokeWidth="2" fill="none" d={`M ${32} ${h-164} H ${pos[0] || 0} V ${h-pos[1]+ 40 || 0}`}/>
+        <path  stroke-dasharray="4"  stroke="#fff" strokeWidth="2" fill="none" d={`M ${32} ${h-164} H ${pos[0] || 0} V ${h-pos[1]+64 || 0}`}/>
       </svg>
     </div>
   );
