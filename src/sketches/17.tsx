@@ -302,7 +302,8 @@ const Instructions = () => {
           paddingBottom: 24,
         }}
       >
-        Please take off your shoes.
+        Please take off your shoes. and tap
+        <Button>Next</Button>
       </div>
       <div>
         <ShoesAnimation />
@@ -334,21 +335,61 @@ const Hud = (props) => {
      <div
         style={{
           position: 'absolute',
-          left: 148,
-          bottom: 148,
-          width: 200,
-          padding: 32,
+          left: w/2 - 320,
+          bottom: 70,
+          width: 400,
+          height: 160,
+          background: 'rgba(130,130,130,0.2)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingLeft: 16,
+          boxSizing: 'border-box',
           borderRadius: 12,
-          fontSize: 24,
-          margin: '0 auto',
+          fontSize: 18,
           color: 'white',
+          backdropFilter: 'blur(12px)',
+          paddingRight: 80,
         }}
       >
-        Take of your shoes.
+        Take off your shoes and tap 'OK' when ready
       </div> 
-      <svg width={w} height={h}>
-        <path  strokeDasharray="6" strokeLinecap="round" stroke="#eee" strokeWidth="2" fill="none" d={`M ${148} ${h-164} H ${pos[0] || 0} V ${h-pos[1]+64 || 0}`}/>
-      </svg>
+      <div
+        style={{
+          position: 'absolute',
+          left: w/2-32,
+          bottom: 194,
+        }}
+      >
+        <Button>OK</Button>
+      </div>
+      <div>
+        <svg width={w} height={h}>
+          <path  strokeDasharray="6" strokeLinecap="round" stroke="#eee" strokeWidth="2" fill="none" d={`M ${w/2} ${h-148} H ${pos[0] || 0} V ${h-pos[1]+64 || 0}`}/>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+const Button = (props) => {
+  return (
+    <div
+      style={{
+        background: 'rgba(250,250,250,0.2)',
+        width: 88,
+        height: 88,
+        display: 'flex',
+        marginLeft: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
+        fontSize: 16,
+        position: 'absolute',
+        color: 'white',
+      }}
+    >
+      { props.children }
     </div>
   );
 }
