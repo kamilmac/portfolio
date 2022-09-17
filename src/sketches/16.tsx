@@ -1,9 +1,11 @@
 import * as THREE from 'three'
 import React from 'react'
 import { useGLTF, PerspectiveCamera, OrbitControls, useTexture, Edges, Html  } from '@react-three/drei'
-import { Canvas, useFrame, useLoader } from '@react-three/fiber'
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { Depth, Fresnel, LayerMaterial, Noise } from 'lamina'
+import Lottie from 'react-lottie'
+import shoesAnim from './shoesAnim.json'
 
 const SCENE = {
   "world_from_foot":   {
@@ -37,29 +39,6 @@ const createMatrix = (arr) => {
 
 
 useGLTF.preload('/scene/scanner-scene-2.glb')
-
-
-const Instructions = () => {
-  return (
-    <div
-      style={{
-        position: 'relative',
-        // background: 'white',
-        width: 'fit-content',
-        padding: 48,
-        borderRadius: 12,
-        fontSize: 48,
-        margin: '0 auto',
-        top: 150,
-        color: 'white',
-      }}
-    >
-      <div>
-        Take of your shoes.
-      </div>
-    </div>
-  );
-}
 
 
 export default function App() {
@@ -118,7 +97,7 @@ export default function App() {
           files={'royal_esplanade_1k.hdr'}
           path={'/'}
         /> */}
-        <hemisphereLight name="Default Ambient Light" intensity={1.0} color="#eaeaea" position={[0, 1, 0]} />
+        {/* <hemisphereLight name="Default Ambient Light" intensity={1.0} color="#eaeaea" position={[0, 1, 0]} /> */}
         <Scanner />
         <OrbitControls
           minPolarAngle={0.5}
@@ -134,9 +113,9 @@ export default function App() {
           makeDefault={true}
           far={100000}
           near={1}
-          fov={45}
+          fov={60}
           up={[0, 1, 0]}
-          position={[6, 4, 3]}
+          position={[4, 3, 3]}
           rotation={[-2.38, 0.86, 2.51]}
         />
       </Canvas>
@@ -302,18 +281,95 @@ const Ground = (props) => {
 }
 
 
-const Scanner = (props) => {
-  const { nodes, materials } = useGLTF('/scene/scanner-scene-2.glb')
+const Instructions = () => {
+  return (
+    <div
+      style={{
+        position: 'relative',
+        background: 'rgba(100,100,100,0.2)',
+        width: 164,
+        padding: 32,
+        borderRadius: 12,
+        fontSize: 32,
+        margin: '0 auto',
+        color: 'white',
+        backdropFilter: 'blur(16px)',
+        background: 'linear-gradient(45deg, rgba(145,121,249,0.3) 0%, rgba(36,118,243,0.3) 100%)',
+      }}
+    >
+      <div
+        style={{
+          fontSize: 24,
+          paddingBottom: 24,
+        }}
+      >
+        Please take of your shoes.
+      </div>
+      <div>
+        <ShoesAnimation />
+      </div>
+    </div>
+  );
+}
+
+const ShoesAnimation = () => {
+  const defaultOptions = {
+      loop: true,
+      autoplay: true,
+      animationData: shoesAnim,
+      rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice"
+      }
+    };
   
+  return (
+    <div>
+      <Lottie 
+	      options={defaultOptions}
+        height={164}
+        width={164}
+      />
+    </div>
+  );
+}
+
+const Scanner = (props) => {
+  const reff = React.useRef();
+  let cam = null
+  useThree(({camera}) => {
+    cam = camera;
+  });
+  const { nodes, materials } = useGLTF('/scene/scanner-scene-2.glb')
   console.log({nodes});
   console.log({materials});
+  console.log({reff});
+  
+  useFrame(() => {
+    if (reff.current) {
+      const pos = nodes.Empty.position.clone();
+      // cam.updateMatrixWorld()
+      pos.project(cam)
+      const DD = (v) => Math.floor(v)
+      const posX = Math.floor(pos.x*(window.innerWidth/2) + window.innerWidth/2);
+      const posY = Math.floor(pos.y*(window.innerHeight/2) + window.innerHeight/2);
+    }
+  }, [reff.current])
+
   return (
     <group  dispose={null}>
+      <mesh
+        geometry={nodes.Empty.geometry}
+        position={nodes.Empty.position}
+      >
+        <Html>
+          <Instructions />
+        </Html>
+      </mesh>
       <mesh
         geometry={nodes.ground.geometry}
         // material={materials['ALL.001']}
       >
-        <meshBasicMaterial aoMap={materials['ALL.001'].aoMap} color={'white'} aoMapIntensity={1} alphaMap={materials['ALL.001'].map} transparent={true}/>
+        <meshBasicMaterial aoMap={materials['ALL.001'].aoMap} color={'#ffffff'} aoMapIntensity={1} alphaMap={materials['ALL.001'].map} transparent={true}/>
       </mesh>
       <mesh
         // position={[4.36, 0.05, 0]}
@@ -343,6 +399,9 @@ const Scanner = (props) => {
         </mesh>
               
         <mesh
+          ref={reff}
+          // position={[2.36, 0.01, 0]}
+
           // rotation={[0, Math.PI / 2, 0]}
         >
           <bufferGeometry {...nodes.shoeRight001.geometry} />
