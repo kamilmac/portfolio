@@ -15,6 +15,7 @@
     "@react-three/postprocessing": "^2.3.2",
     "@splinetool/loader": "^0.9.63",
     "@splinetool/r3f-spline": "^1.0.1",
+    "framer-motion": "^7.3.5",
     "lamina": "^1.1.20",
     "leva": "^0.9.27",
     "react": "^18.0.0",

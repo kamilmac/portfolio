@@ -6,6 +6,7 @@ import * as THREE from 'three';
 const POSITIONS = [
   new THREE.Vector3(5, 2, 2),
   new THREE.Vector3(1, 4, 2),
+  new THREE.Vector3(1.3, 0.3, 1.3),
 ];
 
 const pos = new THREE.Vector3(5, 2, 1)
@@ -18,6 +19,10 @@ export const Camera = (props) => {
     
     if (props.activeStep === 1) {
       state.camera.position.lerp(POSITIONS[props.activeStep], 0.08)
+    }
+
+    if (props.activeStep === 2) {
+      state.camera.position.lerp(new THREE.Vector3(Math.cos(state.clock.elapsedTime/ 4)*6, 0.5, Math.sin(state.clock.elapsedTime/ 4)*6), 0.04)
     }
     // state.camera.position.x ===
   })

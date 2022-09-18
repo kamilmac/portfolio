@@ -1,0 +1,8 @@
+{
+  "name": "Volumental",
+  "short_name": "Volumental",
+  "start_url": "/18",
+  "scope": "/",
+  "lang": "en-US",
+  "display": "standalone"
+}

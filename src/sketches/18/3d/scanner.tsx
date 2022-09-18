@@ -6,7 +6,6 @@ import { GradientMaterial } from "./materials";
 
 export const Scanner = (props) => {
   const emptyPointer = React.useRef();
-  const shoes = React.useRef();
   let cam = null
 
   useThree(({camera}) => {
@@ -66,34 +65,34 @@ export const Scanner = (props) => {
           <GradientMaterial />
         </mesh>
       }
+      {
+        props.activeStep < 2 &&
+        <group>
+          <mesh>
+            <bufferGeometry {...nodes.shoeGround.geometry} />
+            <meshBasicMaterial alphaMap={materials['shoeGround'].aoMap} color={'#111'} transparent={true}/>
+          </mesh>
+                
+          <mesh
+          >
+            <bufferGeometry {...nodes.shoeRight001.geometry} />
+            {
+              props.activeStep === 0 ?
+                <GradientMaterial /> :
+                <meshBasicMaterial aoMap={materials['shoeRightMat.001'].aoMap} color={'white'} aoMapIntensity={1}/>
+            }
+          </mesh>
 
-      <group
-        ref={shoes}
-      >
-        <mesh>
-          <bufferGeometry {...nodes.shoeGround.geometry} />
-          <meshBasicMaterial alphaMap={materials['shoeGround'].aoMap} color={'#111'} transparent={true}/>
-        </mesh>
-              
-        <mesh
-        >
-          <bufferGeometry {...nodes.shoeRight001.geometry} />
-          {
-            props.activeStep === 0 ?
-              <GradientMaterial /> :
-              <meshBasicMaterial aoMap={materials['shoeRightMat.001'].aoMap} color={'white'} aoMapIntensity={1}/>
-          }
-        </mesh>
-
-        <mesh>
-          <bufferGeometry {...nodes.shoeRight.geometry} />
-          {
-            props.activeStep === 0 ?
-              <GradientMaterial /> :
-              <meshBasicMaterial aoMap={materials['shoeRightMat'].aoMap} color={'white'} aoMapIntensity={1}/>
-          }
-        </mesh>
-      </group>
+          <mesh>
+            <bufferGeometry {...nodes.shoeRight.geometry} />
+            {
+              props.activeStep === 0 ?
+                <GradientMaterial /> :
+                <meshBasicMaterial aoMap={materials['shoeRightMat'].aoMap} color={'white'} aoMapIntensity={1}/>
+            }
+          </mesh>
+        </group>
+      }
     </group>
   );
 }

@@ -1,16 +1,45 @@
 import React from 'react'
 import Lottie from 'react-lottie'
 import rollUp from './lottie/rollUp.json'
+import { motion } from 'framer-motion'
+
+const INSTRUCTIONS = [
+  {
+    text: 'Take off your shoes and tap "OK" when ready',
+    w: 400,
+    h: 160,
+  },
+  {
+    text: 'Roll up your pants and stand on the scanner',
+    lottie: rollUp,
+    w: 400,
+    h: 160,
+  },
+  {
+    text: "Hang on. You're almost there",
+    w: 400,
+    h: 160,
+  }
+];
+
+const MARGIN = 80;
+
 
 export const Onboarding = (props) => {
   const [pos, setPos] = React.useState([null,null])
   const w = window.innerWidth
   const h = window.innerHeight
+  
   React.useEffect(() => {
-    setInterval(() => {
-      setPos(props.getPosition());
-    }, 16)
+    let interval = null;
+    setTimeout(() => {
+      interval = setInterval(() => {
+        setPos(props.getPosition());
+      }, 16)
+    }, 1200)
+    return () => clearInterval(interval);
   }, [])
+
   return (
     <div
       style={{
@@ -19,13 +48,16 @@ export const Onboarding = (props) => {
         pointerEvents: 'none',
       }}
     >
-     <div
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ delay: 1.2 }}
         style={{
           position: 'absolute',
-          left: 80,
-          bottom: 80,
-          width: 400,
-          height: 160,
+          x: MARGIN,
+          y: h - (INSTRUCTIONS[props.activeStep].h + MARGIN),
+          width: INSTRUCTIONS[props.activeStep].w,
+          height: INSTRUCTIONS[props.activeStep].h,
           background: 'rgba(30,30,30,0.2)',
           display: 'flex',
           alignItems: 'center',
@@ -36,36 +68,35 @@ export const Onboarding = (props) => {
           fontSize: 18,
           color: '#eee',
           backdropFilter: 'blur(12px)',
-          paddingRight: 120,
+          transformOrigin: 'center right',
         }}
       >
+        { INSTRUCTIONS[props.activeStep].text }
         {
-          props.activeStep === 0 ?
-            'Take off your shoes and tap "OK" when ready' :
-            'Roll up your pants and stand on the scanner'
+          INSTRUCTIONS[props.activeStep].lottie &&
+          <LottieAnim anim={INSTRUCTIONS[props.activeStep].lottie} />
         }
         {
-          props.activeStep === 1 &&
-          <RollUp />
+          INSTRUCTIONS[props.activeStep + 1] &&
+          <div
+            style={{
+              margin: 12,
+            }}
+          >
+            <Button
+              onClick={() => {
+                props.onStepChange(props.activeStep+1);
+              }}
+            >
+              OK
+            </Button>
+          </div>
         }
-      </div>
-      <div
-        style={{
-          position: 'absolute',
-          left: w/2-320,
-          bottom: 202,
-        }}
-      >
-        <Button
-          onClick={() => {
-            props.onStepChange(props.activeStep+1);
-          }}
-        >OK</Button>
-      </div>
+      </motion.div>
       {
-        pos[0] && pos[1] &&
+        pos[0] && pos[1] && props.activeStep < 2 &&
         <svg width={w} height={h}>
-          <path  strokeDasharray="6" strokeLinecap="round" stroke="#ddd" strokeWidth="2" fill="none" d={`M ${w/2- 200} ${h-158} H ${pos[0] || 0} V ${h-pos[1] || 0}`}/>
+          <path strokeDasharray="6" strokeLinecap="round" stroke="#ddd" strokeWidth="2" fill="none" d={`M ${INSTRUCTIONS[props.activeStep].w + MARGIN} ${h-(INSTRUCTIONS[props.activeStep].h/2 + MARGIN)} H ${pos[0] || 0} V ${h-pos[1] || 0}`}/>
         </svg>
       }
     </div>
@@ -74,33 +105,37 @@ export const Onboarding = (props) => {
 
 const Button = (props) => {
   return (
-    <div
+    <motion.div
+      whileTap={{
+        scale: 0.9,
+      }}
       style={{
         background: 'rgba(250,250,250,0.2)',
         width: 88,
+        minWidth: 88,
+        maxWidth: 88,
         height: 88,
         display: 'flex',
-        marginLeft: 12,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: '50%',
         fontSize: 16,
-        position: 'absolute',
         color: 'white',
-        pointerEvents: 'all'
+        pointerEvents: 'all',
+        position: 'relative',
       }}
       onClick={props.onClick}
     >
       { props.children }
-    </div>
+    </motion.div>
   );
 }
 
-const RollUp = () => {
+const LottieAnim = (props) => {
   const defaultOptions = {
       loop: true,
       autoplay: true,
-      animationData: rollUp,
+      animationData: props.anim,
       rendererSettings: {
         preserveAspectRatio: "xMidYMid slice"
       }
