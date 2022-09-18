@@ -35,6 +35,7 @@ const createMatrix = (arr) => {
   return m;
 }
 
+
 export const Feet = () => {
   const step = 0;
 
@@ -64,6 +65,7 @@ export const Feet = () => {
   );
 }
 
+
 const Foot = (props) => {
   const obj = useLoader(OBJLoader, props.obj);
 
@@ -89,6 +91,7 @@ const Foot = (props) => {
     </>
   );
 }
+
 
 const Ground = (props) => {
   const dotsOnly = true;

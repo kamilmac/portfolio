@@ -17,7 +17,7 @@ export const Scanner = (props) => {
   
   useFrame(() => {
     if (emptyPointer.current) {
-      const pos = nodes.Empty.position.clone();
+      const pos = props.activeStep === 0 ? nodes.shoePointer.position.clone() : nodes.feetContourPointer.position.clone();
       // cam.updateMatrixWorld()
       pos.project(cam)
       const DD = (v) => Math.floor(v)
@@ -31,8 +31,15 @@ export const Scanner = (props) => {
     <group  dispose={null}>
       <mesh
         ref={emptyPointer}
-        geometry={nodes.Empty.geometry}
-        position={nodes.Empty.position}
+        geometry={nodes.shoePointer.geometry}
+        position={nodes.shoePointer.position}
+      >
+      </mesh>
+
+      <mesh
+        ref={emptyPointer}
+        geometry={nodes.feetContourPointer.geometry}
+        position={nodes.feetContourPointer.position}
       >
       </mesh>
 
@@ -51,30 +58,34 @@ export const Scanner = (props) => {
         <meshBasicMaterial aoMap={materials['ALL'].aoMap} color={'white'}  aoMapIntensity={1}/>
       </mesh>
 
-      <mesh>
+      { props.activeStep === 1 &&
+        <mesh>
           <bufferGeometry {...nodes.feetPlaceholder.geometry} />
           <GradientMaterial />
-      </mesh>
+        </mesh>
+      }
 
-      <group>
-        <mesh>
-          <bufferGeometry {...nodes.shoeGround.geometry} />
-          <meshBasicMaterial alphaMap={materials['shoeGround'].aoMap} color={'#111'} transparent={true}/>
-        </mesh>
-              
-        <mesh
-        >
-          <bufferGeometry {...nodes.shoeRight001.geometry} />
-          {/* <meshBasicMaterial aoMap={materials['shoeRightMat.001'].aoMap} color={'white'}aoMapIntensity={1} /> */}
-          <GradientMaterial />
-        </mesh>
+      { props.activeStep === 0 &&
+        <group>
+          <mesh>
+            <bufferGeometry {...nodes.shoeGround.geometry} />
+            <meshBasicMaterial alphaMap={materials['shoeGround'].aoMap} color={'#111'} transparent={true}/>
+          </mesh>
+                
+          <mesh
+          >
+            <bufferGeometry {...nodes.shoeRight001.geometry} />
+            {/* <meshBasicMaterial aoMap={materials['shoeRightMat.001'].aoMap} color={'white'}aoMapIntensity={1} /> */}
+            <GradientMaterial />
+          </mesh>
 
-        <mesh>
-          <bufferGeometry {...nodes.shoeRight.geometry} />
-          {/* <meshBasicMaterial aoMap={materials['shoeRightMat'].aoMap} color={'white'} aoMapIntensity={1}/> */}
-          <GradientMaterial />
-        </mesh>
-      </group>
+          <mesh>
+            <bufferGeometry {...nodes.shoeRight.geometry} />
+            {/* <meshBasicMaterial aoMap={materials['shoeRightMat'].aoMap} color={'white'} aoMapIntensity={1}/> */}
+            <GradientMaterial />
+          </mesh>
+        </group>
+      }
     </group>
   );
 }

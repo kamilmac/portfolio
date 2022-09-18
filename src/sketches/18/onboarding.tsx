@@ -48,11 +48,15 @@ export const Onboarding = (props) => {
           bottom: 194,
         }}
       >
-        <Button>OK</Button>
+        <Button
+          onClick={() => {
+            props.onStepChange(props.activeStep+1);
+          }}
+        >OK</Button>
       </div>
       <div>
         <svg width={w} height={h}>
-          <path  strokeDasharray="6" strokeLinecap="round" stroke="#eee" strokeWidth="2" fill="none" d={`M ${w/2} ${h-148} H ${pos[0] || 0} V ${h-pos[1]+64 || 0}`}/>
+          <path  strokeDasharray="6" strokeLinecap="round" stroke="#eee" strokeWidth="2" fill="none" d={`M ${w/2} ${h-148} H ${pos[0] || 0} V ${h-pos[1] || 0}`}/>
         </svg>
       </div>
     </div>
@@ -74,7 +78,9 @@ const Button = (props) => {
         fontSize: 16,
         position: 'absolute',
         color: 'white',
+        pointerEvents: 'all'
       }}
+      onClick={props.onClick}
     >
       { props.children }
     </div>
