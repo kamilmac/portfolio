@@ -22,7 +22,7 @@ export const Camera = (props) => {
     }
 
     if (props.activeStep === 2) {
-      state.camera.position.lerp(new THREE.Vector3(Math.cos(state.clock.elapsedTime/ 4)*6, 0.5, Math.sin(state.clock.elapsedTime/ 4)*6), 0.04)
+      state.camera.position.lerp(new THREE.Vector3(Math.cos(state.clock.elapsedTime/ 4)*5, 0.5, Math.sin(state.clock.elapsedTime/ 4)*5), 0.04)
     }
   })
   

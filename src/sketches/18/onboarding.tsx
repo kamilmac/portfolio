@@ -49,7 +49,7 @@ export const Onboarding = (props) => {
       max: 40,
       step: 1,
     },
-    InstructionsBGColor: '#1e1e1e33',
+    InstructionsBGColor: '#1e1e1e44',
     InstructionsPaddingLeft: {
       value: 80,
       min: 0,
@@ -144,7 +144,7 @@ const Button = (props) => {
   const {
     InstructionsButtonColor,
   } = useControls({
-    InstructionsButtonColor: '#fafafa33',
+    InstructionsButtonColor: '#3b3b3b',
   });
   return (
     <motion.div

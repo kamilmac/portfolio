@@ -19,7 +19,7 @@ export default function App() {
     BackgroundColor2,
     BackgroundDeg,
   } = useControls({
-    BackgroundColor1: '#ffecec',
+    BackgroundColor1: '#2f3138',
     BackgroundColor2: '#ffffff',
     BackgroundDeg: {
       value: 45,
@@ -35,7 +35,6 @@ export default function App() {
         style={{
           height: '100vh',
           background: `linear-gradient(${BackgroundDeg}deg, ${BackgroundColor1} 0%, ${BackgroundColor2} 100%)`,
-          // backgroundImage: 'url(https://blenderartists.org/uploads/default/original/4X/7/e/2/7e2d7bea4ac21388c4a96e1371f375c4ce00094b.jpg)'
         }}
         gl={{
           toneMapping: THREE.LinearToneMapping,
