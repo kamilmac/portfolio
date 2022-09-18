@@ -14,6 +14,7 @@ const pos = new THREE.Vector3(5, 2, 1)
 export const Camera = (props) => {
   useFrame((state) => {
     if (props.activeStep === 0 && state.clock.elapsedTime < 1.6) {
+      console.log(state.clock.elapsedTime)
       state.camera.position.lerp(POSITIONS[props.activeStep], 0.08)
     }
     

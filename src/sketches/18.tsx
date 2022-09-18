@@ -5,7 +5,9 @@ import { Camera } from './18/3d/camera'
 import { Scanner } from './18/3d/scanner'
 import { Feet } from './18/3d/feet'
 import React from 'react'
+import { useGLTF } from '@react-three/drei'
 
+useGLTF.preload('/scene/scanner-scene-2.glb')
 
 let position = [0,0];
 
