@@ -14,7 +14,7 @@ export const Scanner = (props) => {
     AmbientOcclusion,
   } = useControls({
     ScannerGroundAlpha: false,
-    ScannerGroundColor: '#f2d7d7',
+    ScannerGroundColor: '#eeeeee',
     ScannerBaseColor: '#f8f8f8',
     ScannerPlateColor: '#f8f8f8',
     AmbientOcclusion: {
