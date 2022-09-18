@@ -51,7 +51,7 @@ export const Onboarding = (props) => {
     },
     InstructionsBGColor: '#1e1e1e44',
     InstructionsPaddingLeft: {
-      value: 80,
+      value: 200,
       min: 0,
       max: 1000,
       step: 10,
