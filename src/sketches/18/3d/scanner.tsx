@@ -2,9 +2,28 @@ import React from "react";
 import { useFrame, useThree } from '@react-three/fiber'
 import { useGLTF } from "@react-three/drei";
 import { GradientMaterial } from "./materials";
+import { useControls } from "leva";
 
 
 export const Scanner = (props) => {
+  const {
+    ScannerGroundAlpha,
+    ScannerGroundColor,
+    ScannerBaseColor,
+    ScannerPlateColor,
+    AmbientOcclusion,
+  } = useControls({
+    ScannerGroundAlpha: false,
+    ScannerGroundColor: '#ffe0e0',
+    ScannerBaseColor: '#ffffff',
+    ScannerPlateColor: '#ffffff',
+    AmbientOcclusion: {
+      value: 1,
+      min: 0,
+      max: 1,
+      step: 0.1,
+    },
+  });
   const emptyPointer = React.useRef();
   let cam = null
 
@@ -27,7 +46,7 @@ export const Scanner = (props) => {
       props.onPositionUpdate(posX, posY)
     }
   }, [emptyPointer.current])
-
+  console.log(ScannerGroundAlpha)
   return (
     <group  dispose={null}>
       <mesh
@@ -44,19 +63,29 @@ export const Scanner = (props) => {
       >
       </mesh>
 
-      <mesh>
-        <bufferGeometry {...nodes.ground.geometry} />
-        <meshBasicMaterial aoMap={materials['ALL.001'].aoMap} color={'#ffffff'} aoMapIntensity={1} alphaMap={materials['ALL.001'].map} transparent={true}/>
-      </mesh>
+      {
+        ScannerGroundAlpha &&
+        <mesh>
+          <bufferGeometry {...nodes.ground.geometry} />
+          <meshBasicMaterial aoMap={materials['ALL.001'].aoMap} color={ScannerGroundColor} aoMapIntensity={AmbientOcclusion} alphaMap={materials['ALL.001'].map} transparent={true}/> :
+        </mesh>
+      }
+      {
+        !ScannerGroundAlpha &&
+        <mesh>
+          <bufferGeometry {...nodes.ground.geometry} />
+          <meshBasicMaterial aoMap={materials['ALL.001'].aoMap} color={ScannerGroundColor} aoMapIntensity={AmbientOcclusion} /> :
+        </mesh>
+      }
 
       <mesh>
         <bufferGeometry {...nodes.base.geometry} />
-        <meshBasicMaterial aoMap={materials['ALL.002'].aoMap} color={'white'}  aoMapIntensity={1}/>
+        <meshBasicMaterial aoMap={materials['ALL.002'].aoMap} color={ScannerBaseColor}  aoMapIntensity={AmbientOcclusion}/>
       </mesh>
 
       <mesh>
         <bufferGeometry {...nodes.plate.geometry} />
-        <meshBasicMaterial aoMap={materials['ALL'].aoMap} color={'white'}  aoMapIntensity={1}/>
+        <meshBasicMaterial aoMap={materials['ALL'].aoMap} color={ScannerPlateColor}  aoMapIntensity={AmbientOcclusion}/>
       </mesh>
 
       { props.activeStep === 1 &&
@@ -79,7 +108,7 @@ export const Scanner = (props) => {
             {
               props.activeStep === 0 ?
                 <GradientMaterial /> :
-                <meshBasicMaterial aoMap={materials['shoeRightMat.001'].aoMap} color={'white'} aoMapIntensity={1}/>
+                <meshBasicMaterial aoMap={materials['shoeRightMat.001'].aoMap} color={'#ffffff'} aoMapIntensity={AmbientOcclusion}/>
             }
           </mesh>
 
@@ -88,7 +117,7 @@ export const Scanner = (props) => {
             {
               props.activeStep === 0 ?
                 <GradientMaterial /> :
-                <meshBasicMaterial aoMap={materials['shoeRightMat'].aoMap} color={'white'} aoMapIntensity={1}/>
+                <meshBasicMaterial aoMap={materials['shoeRightMat'].aoMap} color={'#ffffff'} aoMapIntensity={AmbientOcclusion}/>
             }
           </mesh>
         </group>

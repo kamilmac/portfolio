@@ -1,8 +1,19 @@
 import { useFrame } from '@react-three/fiber';
 import { Depth, Fresnel, LayerMaterial, Noise } from 'lamina';
+import { useControls } from 'leva';
 import React from 'react'
 
 export const GradientMaterial = () => {
+  const {
+    ShaderCol1,
+    ShaderCol2,
+    ShaderFresnelCol,
+  } = useControls({
+      ShaderCol1: '#3ff233',
+      ShaderCol2: '#0079f9',
+      ShaderFresnelCol: 'red',
+    },
+  );
   const ref = React.useRef();
   const ref2 = React.useRef();
   
@@ -19,11 +30,11 @@ export const GradientMaterial = () => {
         near={0.4854}
         far={0.7661999999999932}
         origin={[-0.4920000000000004, 0.4250000000000003, 0]}
-        colorA={'#3ff233'}
-        colorB={'#0079f9'}
+        colorA={ShaderCol1}
+        colorB={ShaderCol2}
       />
       <Fresnel
-        color={'red'}
+        color={ShaderFresnelCol}
         mode={'screen'} 
       />
       <Noise

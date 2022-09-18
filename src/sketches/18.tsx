@@ -6,6 +6,7 @@ import { Scanner } from './18/3d/scanner'
 import { Feet } from './18/3d/feet'
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
+import { useControls } from 'leva'
 
 useGLTF.preload('/scene/scanner-scene-2.glb')
 
@@ -13,14 +14,27 @@ let position = [0,0];
 
 export default function App() {
   const [step, setStep] = React.useState(0)
+  const {
+    BackgroundColor1,
+    BackgroundColor2,
+    BackgroundDeg,
+  } = useControls({
+    BackgroundColor1: '#ffecec',
+    BackgroundColor2: '#ffffff',
+    BackgroundDeg: {
+      value: 45,
+      min: 0,
+      max: 360,
+      step: 1,
+    },
+  })
   
   return (
     <>
       <Canvas
         style={{
           height: '100vh',
-          background: 'linear-gradient(45deg, rgba(180,180,180,1) 0%, rgba(240,240,240,1) 100%)',
-          // background: '#bbb',
+          background: `linear-gradient(${BackgroundDeg}deg, ${BackgroundColor1} 0%, ${BackgroundColor2} 100%)`,
           // backgroundImage: 'url(https://blenderartists.org/uploads/default/original/4X/7/e/2/7e2d7bea4ac21388c4a96e1371f375c4ce00094b.jpg)'
         }}
         gl={{
@@ -38,7 +52,6 @@ export default function App() {
         />
       </Canvas>
       <Onboarding
-        onClick={() => console.log('HI')}
         getPosition={() => position}
         onStepChange={setStep}
         activeStep={step}

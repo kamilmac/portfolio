@@ -2,6 +2,7 @@ import React from 'react'
 import Lottie from 'react-lottie'
 import rollUp from './lottie/rollUp.json'
 import { motion } from 'framer-motion'
+import { useControls } from 'leva';
 
 const INSTRUCTIONS = [
   {
@@ -22,29 +23,58 @@ const INSTRUCTIONS = [
   }
 ];
 
-const MARGIN = 80;
-
 
 export const Onboarding = (props) => {
   const [pos, setPos] = React.useState([null,null])
+  const {
+    DisableDashedLine,
+    DashedLineColor,
+    DashedLineWidth,
+    DashedLineArray,
+    InstructionsBGColor,
+    InstructionsPaddingLeft,
+    InstructionsPaddingBottom,
+  } = useControls({
+    DisableDashedLine: false,
+    DashedLineColor: '#ddd',
+    DashedLineWidth: {
+      value: 2,
+      min: 1,
+      max: 20,
+      step: 1,
+    },
+    DashedLineArray: {
+      value: 12,
+      min: 1,
+      max: 40,
+      step: 1,
+    },
+    InstructionsBGColor: '#1e1e1e33',
+    InstructionsPaddingLeft: {
+      value: 80,
+      min: 0,
+      max: 1000,
+      step: 10,
+    },
+    InstructionsPaddingBottom: {
+      value: 80,
+      min: 0,
+      max: 1000,
+      step: 10,
+    },
+  });
   const w = window.innerWidth
   const h = window.innerHeight
   
   React.useEffect(() => {
     let interval = null;
-    console.log('PRE TIMEOUT');
-    
     setTimeout(() => {
-      console.log('IN TIMEOUT');
-      
       interval = setInterval(() => {
         const newP = props.getPosition()
-        console.log('pos', newP);
         setPos(newP);
       }, 16)
     }, 1200)
     return () => {
-      console.log('clearing interval');
       clearInterval(interval)
     };
   }, [])
@@ -63,11 +93,11 @@ export const Onboarding = (props) => {
         transition={{ delay: 1.2 }}
         style={{
           position: 'absolute',
-          x: MARGIN,
-          y: h - (INSTRUCTIONS[props.activeStep].h + MARGIN),
+          x: InstructionsPaddingLeft,
+          y: h - (INSTRUCTIONS[props.activeStep].h + InstructionsPaddingBottom),
           width: INSTRUCTIONS[props.activeStep].w,
           height: INSTRUCTIONS[props.activeStep].h,
-          background: 'rgba(30,30,30,0.2)',
+          background: InstructionsBGColor,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -101,9 +131,9 @@ export const Onboarding = (props) => {
         </div>
       </motion.div>
       {
-        pos[0] && pos[1] && props.activeStep < 2 &&
+        pos[0] && pos[1] && props.activeStep < 2 && !DisableDashedLine &&
         <svg width={w} height={h}>
-          <path strokeDasharray="6" strokeLinecap="round" stroke="#ddd" strokeWidth="2" fill="none" d={`M ${INSTRUCTIONS[props.activeStep].w + MARGIN} ${h-(INSTRUCTIONS[props.activeStep].h/2 + MARGIN)} H ${pos[0] || 0} V ${h-pos[1] || 0}`}/>
+          <path strokeDasharray={DashedLineArray} strokeLinecap="round" stroke={DashedLineColor} strokeWidth={DashedLineWidth} fill="none" d={`M ${INSTRUCTIONS[props.activeStep].w + InstructionsPaddingLeft} ${h-(INSTRUCTIONS[props.activeStep].h/2 + InstructionsPaddingBottom)} H ${pos[0] || 0} V ${h-pos[1] || 0}`}/>
         </svg>
       }
     </div>
@@ -111,13 +141,18 @@ export const Onboarding = (props) => {
 }
 
 const Button = (props) => {
+  const {
+    InstructionsButtonColor,
+  } = useControls({
+    InstructionsButtonColor: '#fafafa33',
+  });
   return (
     <motion.div
       whileTap={{
         scale: 0.9,
       }}
       style={{
-        background: 'rgba(250,250,250,0.2)',
+        background: InstructionsButtonColor,
         width: 88,
         minWidth: 88,
         maxWidth: 88,
