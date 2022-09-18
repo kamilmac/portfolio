@@ -32,12 +32,21 @@ export const Onboarding = (props) => {
   
   React.useEffect(() => {
     let interval = null;
+    console.log('PRE TIMEOUT');
+    
     setTimeout(() => {
+      console.log('IN TIMEOUT');
+      
       interval = setInterval(() => {
-        setPos(props.getPosition());
+        const newP = props.getPosition()
+        console.log('pos', newP);
+        setPos(newP);
       }, 16)
     }, 1200)
-    return () => clearInterval(interval);
+    return () => {
+      console.log('clearing interval');
+      clearInterval(interval)
+    };
   }, [])
 
   return (

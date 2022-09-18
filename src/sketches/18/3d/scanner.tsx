@@ -11,7 +11,7 @@ export const Scanner = (props) => {
   useThree(({camera}) => {
     cam = camera;
   });
-  const { nodes, materials } = useGLTF('/scene/scanner-scene-2.glb')
+  const { nodes, materials } = useGLTF('/scene/scanner-scene-2_comp.glb')
   
   console.log({nodes});
   console.log({materials});
