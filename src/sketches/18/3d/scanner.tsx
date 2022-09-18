@@ -20,7 +20,7 @@ export const Scanner = (props) => {
     AmbientOcclusion: {
       value: 1,
       min: 0,
-      max: 1,
+      max: 2,
       step: 0.1,
     },
   });
