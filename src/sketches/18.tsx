@@ -19,7 +19,7 @@ export default function App() {
     BackgroundColor2,
     BackgroundDeg,
   } = useControls({
-    BackgroundColor1: '#897a78',
+    BackgroundColor1: '#6f7276',
     BackgroundColor2: '#ffffff',
     BackgroundDeg: {
       value: 45,

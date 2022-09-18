@@ -3,6 +3,7 @@ import Lottie from 'react-lottie'
 import rollUp from './lottie/rollUp.json'
 import { motion } from 'framer-motion'
 import { useControls } from 'leva';
+import { Scanline } from '@react-three/postprocessing';
 
 const INSTRUCTIONS = [
   {
@@ -88,9 +89,6 @@ export const Onboarding = (props) => {
       }}
     >
       <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ delay: 1.2 }}
         style={{
           position: 'absolute',
           x: InstructionsPaddingLeft,
@@ -144,7 +142,7 @@ const Button = (props) => {
   const {
     InstructionsButtonColor,
   } = useControls({
-    InstructionsButtonColor: '#3b3b3b',
+    InstructionsButtonColor: '#3e00cfdd',
   });
   return (
     <motion.div
