@@ -37,9 +37,9 @@ export const Onboarding = (props) => {
     InstructionsPaddingBottom,
   } = useControls({
     DisableDashedLine: false,
-    DashedLineColor: '#ddd',
+    DashedLineColor: '#3d37de',
     DashedLineWidth: {
-      value: 2,
+      value: 1,
       min: 1,
       max: 20,
       step: 1,
