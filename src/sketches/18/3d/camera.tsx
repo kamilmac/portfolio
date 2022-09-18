@@ -1,18 +1,23 @@
 import { PerspectiveCamera, OrbitControls  } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber';
+import React from 'react';
 import * as THREE from 'three';
 
 const POSITIONS = [
-  new THREE.Vector3(5, 2, 1),
-  new THREE.Vector3(1.1, 4, 0.1),
+  new THREE.Vector3(5, 2, 2),
+  new THREE.Vector3(1, 4, 2),
 ];
 
 const pos = new THREE.Vector3(5, 2, 1)
 
 export const Camera = (props) => {
-  useFrame((state, delta) => {
+  useFrame((state) => {
+    if (props.activeStep === 0 && state.clock.elapsedTime < 1.6) {
+      state.camera.position.lerp(POSITIONS[props.activeStep], 0.08)
+    }
+    
     if (props.activeStep === 1) {
-      state.camera.position.lerp(POSITIONS[props.activeStep], 0.04)
+      state.camera.position.lerp(POSITIONS[props.activeStep], 0.08)
     }
     // state.camera.position.x ===
   })
@@ -24,10 +29,10 @@ export const Camera = (props) => {
         maxPolarAngle={1.5}
         rotateSpeed={0.6}
         autoRotate={true}
-        autoRotateSpeed={0.18}
+        autoRotateSpeed={0.25}
         enableDamping
         minDistance={3.5}
-        maxDistance={13.5}
+        maxDistance={20.5}
         enablePan={false}
       />
       
@@ -38,7 +43,7 @@ export const Camera = (props) => {
         near={1}
         fov={60}
         up={[0, 1, 0]}
-        position={POSITIONS[0]}
+        position={[20,20,0]}
         rotation={[-2.38, 0.86, 2.51]}
       />
     </>

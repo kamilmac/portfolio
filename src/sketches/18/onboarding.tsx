@@ -1,6 +1,6 @@
 import React from 'react'
 import Lottie from 'react-lottie'
-import shoesAnim from './lottie/shoesAnim.json'
+import rollUp from './lottie/rollUp.json'
 
 export const Onboarding = (props) => {
   const [pos, setPos] = React.useState([null,null])
@@ -22,30 +22,38 @@ export const Onboarding = (props) => {
      <div
         style={{
           position: 'absolute',
-          left: w/2 - 320,
-          bottom: 70,
+          left: 80,
+          bottom: 80,
           width: 400,
           height: 160,
-          background: 'rgba(130,130,130,0.1)',
+          background: 'rgba(30,30,30,0.2)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           paddingLeft: 16,
           boxSizing: 'border-box',
-          borderRadius: 12,
+          borderRadius: 32,
           fontSize: 18,
-          color: 'white',
+          color: '#eee',
           backdropFilter: 'blur(12px)',
           paddingRight: 120,
         }}
       >
-        Take off your shoes and tap 'OK' when ready
-      </div> 
+        {
+          props.activeStep === 0 ?
+            'Take off your shoes and tap "OK" when ready' :
+            'Roll up your pants and stand on the scanner'
+        }
+        {
+          props.activeStep === 1 &&
+          <RollUp />
+        }
+      </div>
       <div
         style={{
           position: 'absolute',
-          left: w/2-32,
-          bottom: 194,
+          left: w/2-320,
+          bottom: 202,
         }}
       >
         <Button
@@ -54,11 +62,12 @@ export const Onboarding = (props) => {
           }}
         >OK</Button>
       </div>
-      <div>
+      {
+        pos[0] && pos[1] &&
         <svg width={w} height={h}>
-          <path  strokeDasharray="6" strokeLinecap="round" stroke="#eee" strokeWidth="2" fill="none" d={`M ${w/2} ${h-148} H ${pos[0] || 0} V ${h-pos[1] || 0}`}/>
+          <path  strokeDasharray="6" strokeLinecap="round" stroke="#ddd" strokeWidth="2" fill="none" d={`M ${w/2- 200} ${h-158} H ${pos[0] || 0} V ${h-pos[1] || 0}`}/>
         </svg>
-      </div>
+      }
     </div>
   );
 }
@@ -87,11 +96,11 @@ const Button = (props) => {
   );
 }
 
-const ShoesAnimation = () => {
+const RollUp = () => {
   const defaultOptions = {
       loop: true,
       autoplay: true,
-      animationData: shoesAnim,
+      animationData: rollUp,
       rendererSettings: {
         preserveAspectRatio: "xMidYMid slice"
       }
@@ -101,8 +110,8 @@ const ShoesAnimation = () => {
     <div>
       <Lottie 
 	      options={defaultOptions}
-        height={164}
-        width={164}
+        height={96}
+        width={96}
       />
     </div>
   );
