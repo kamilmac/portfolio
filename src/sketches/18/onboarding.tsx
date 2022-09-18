@@ -76,22 +76,20 @@ export const Onboarding = (props) => {
           INSTRUCTIONS[props.activeStep].lottie &&
           <LottieAnim anim={INSTRUCTIONS[props.activeStep].lottie} />
         }
-        {
-          INSTRUCTIONS[props.activeStep + 1] &&
-          <div
-            style={{
-              margin: 12,
+        <div
+          style={{
+            margin: 12,
+          }}
+        >
+          <Button
+            onClick={() => {
+              const next = INSTRUCTIONS[props.activeStep+1] ? props.activeStep+1 : 0;
+              props.onStepChange(next);
             }}
           >
-            <Button
-              onClick={() => {
-                props.onStepChange(props.activeStep+1);
-              }}
-            >
-              OK
-            </Button>
-          </div>
-        }
+            OK
+          </Button>
+        </div>
       </motion.div>
       {
         pos[0] && pos[1] && props.activeStep < 2 &&
