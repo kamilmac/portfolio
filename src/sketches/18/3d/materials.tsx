@@ -9,7 +9,7 @@ export const GradientMaterial = () => {
     ShaderCol2,
     ShaderFresnelCol,
   } = useControls({
-      ShaderCol1: '#3ff233',
+      ShaderCol1: '#f23333',
       ShaderCol2: '#0079f9',
       ShaderFresnelCol: 'red',
     },
