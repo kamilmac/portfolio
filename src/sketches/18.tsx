@@ -58,11 +58,6 @@ export default function App() {
   console.log({levaStore});
   
   React.useEffect(() => {
-    document.addEventListener("keypress", (e) => {
-      if (e.code === 'Space') {
-        window.location.href = '/18'
-      }
-    });
     try {
       const q = getQueryVariable('arg');
       const str = JSON.parse(convertFromHex(q))
