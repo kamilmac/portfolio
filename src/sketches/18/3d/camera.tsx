@@ -11,9 +11,21 @@ const POSITIONS = [
 
 const pos = new THREE.Vector3(5, 2, 1)
 
+let skipLerp = false;
+
 export const Camera = (props) => {
+  React.useEffect(() => {
+    const c = document.getElementsByTagName('canvas')[0];
+    c.addEventListener('touchstart', () => skipLerp = true);
+    c.addEventListener('click', () => skipLerp = true);
+    return () => {
+      c.removeEventListener('touchstart');
+      c.removeEventListener('click');
+    }
+  }, [])
+  
   useFrame((state) => {
-    if (props.activeStep === 0 && state.clock.elapsedTime < 4.6) {
+    if (props.activeStep === 0 && state.clock.elapsedTime < 4 && !skipLerp) {
       state.camera.position.lerp(POSITIONS[props.activeStep], 0.08)
     }
     
@@ -33,7 +45,7 @@ export const Camera = (props) => {
         maxPolarAngle={1.5}
         rotateSpeed={0.6}
         autoRotate={true}
-        autoRotateSpeed={0.25}
+        autoRotateSpeed={0.4}
         enableDamping
         minDistance={3.5}
         maxDistance={20.5}
