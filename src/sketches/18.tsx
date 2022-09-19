@@ -11,7 +11,7 @@ import { Leva, useControls, levaStore } from 'leva'
 useGLTF.preload('/scene/scanner-scene-2.glb')
 
 let position = [0,0];
-const obj = {};
+let leva = {};
 
 function convertFromHex(hex) {
   var hex = hex.toString();//force conversion
@@ -58,6 +58,11 @@ export default function App() {
   console.log({levaStore});
   
   React.useEffect(() => {
+    document.addEventListener("keypress", (e) => {
+      if (e.code === 'Space') {
+        window.location.href = '/18'
+      }
+    });
     try {
       const q = getQueryVariable('arg');
       const str = JSON.parse(convertFromHex(q))
@@ -73,9 +78,9 @@ export default function App() {
     const interval = setInterval(() => {
       const store = levaStore.getData();
       Object.keys(store).forEach(key => {
-        obj[key] = store[key].value
+        leva[key] = store[key].value
       })
-      const str = convertToHex(JSON.stringify(obj))
+      const str = convertToHex(JSON.stringify(leva))
       window.history.replaceState(null, null, `?arg=${str}`);
     }, 2000)
     return () => {
