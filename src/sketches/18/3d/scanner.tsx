@@ -32,9 +32,6 @@ export const Scanner = (props) => {
   });
   const { nodes, materials } = useGLTF('/scene/scanner-scene-2_comp.glb')
   
-  console.log({nodes});
-  console.log({materials});
-  
   useFrame(() => {
     if (emptyPointer.current) {
       const pos = props.activeStep === 0 ? nodes.shoePointer.position.clone() : nodes.feetContourPointer.position.clone();
@@ -46,7 +43,7 @@ export const Scanner = (props) => {
       props.onPositionUpdate(posX, posY)
     }
   }, [emptyPointer.current])
-  console.log(ScannerGroundAlpha)
+
   return (
     <group  dispose={null}>
       <mesh
