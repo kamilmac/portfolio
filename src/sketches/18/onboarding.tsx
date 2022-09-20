@@ -43,19 +43,19 @@ export const VolumentalLogo: React.FC = () => {
 const INSTRUCTIONS = [
   {
     text: 'Take off your shoes and tap "OK" when ready',
-    w: 400,
-    h: 160,
+    w: 520,
+    h: 200,
   },
   {
     text: 'Roll up your pants and stand on the scanner',
     lottie: rollUp,
-    w: 400,
-    h: 160,
+    w: 460,
+    h: 320,
   },
   {
     text: "Hang on. You're almost there",
-    w: 400,
-    h: 160,
+    w: 500,
+    h: 200,
   }
 ];
 
@@ -87,7 +87,7 @@ export const Onboarding = (props) => {
     },
     InstructionsBGColor: '#1e1e1e44',
     InstructionsPaddingLeft: {
-      value: 200,
+      value: 120,
       min: 0,
       max: 1000,
       step: 10,
@@ -146,20 +146,41 @@ export const Onboarding = (props) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          paddingLeft: 16,
+          paddingLeft: 24,
           boxSizing: 'border-box',
           borderRadius: 32,
-          fontSize: 18,
+          fontSize: 28,
           color: '#eee',
           backdropFilter: 'blur(12px)',
           transformOrigin: 'center right',
         }}
       >
-        { INSTRUCTIONS[props.activeStep].text }
-        {
-          INSTRUCTIONS[props.activeStep].lottie &&
-          <LottieAnim anim={INSTRUCTIONS[props.activeStep].lottie} />
-        }
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            { INSTRUCTIONS[props.activeStep].text }
+          </div>
+          {
+            INSTRUCTIONS[props.activeStep].lottie &&
+            <div
+              style={{
+                paddingTop: 24,
+              }}
+            >
+              <LottieAnim anim={INSTRUCTIONS[props.activeStep].lottie} />
+            </div>
+          }
+        </div>
         <div
           style={{
             margin: 12,
@@ -198,15 +219,15 @@ const Button = (props) => {
       }}
       style={{
         background: InstructionsButtonColor,
-        width: 88,
-        minWidth: 88,
-        maxWidth: 88,
-        height: 88,
+        width: 112,
+        minWidth: 112,
+        maxWidth: 112,
+        height: 112,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: '50%',
-        fontSize: 16,
+        fontSize: 28,
         color: 'white',
         pointerEvents: 'all',
         position: 'relative',
@@ -229,12 +250,10 @@ const LottieAnim = (props) => {
     };
   
   return (
-    <div>
-      <Lottie 
-	      options={defaultOptions}
-        height={96}
-        width={96}
-      />
-    </div>
+    <Lottie 
+      options={defaultOptions}
+      height={144}
+      width={144}
+    />
   );
 }
