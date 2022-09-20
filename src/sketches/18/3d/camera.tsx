@@ -9,8 +9,6 @@ const POSITIONS = [
   new THREE.Vector3(1.3, 0.3, 1.3),
 ];
 
-const pos = new THREE.Vector3(5, 2, 1)
-
 let skipLerp = false;
 
 export const Camera = (props) => {
@@ -25,7 +23,7 @@ export const Camera = (props) => {
   }, [])
   
   useFrame((state) => {
-    if (props.activeStep === 0 && state.clock.elapsedTime < 4 && !skipLerp) {
+    if (props.activeStep === 0 && state.clock.elapsedTime < 5 && !skipLerp) {
       state.camera.position.lerp(POSITIONS[props.activeStep], 0.08)
     }
     
