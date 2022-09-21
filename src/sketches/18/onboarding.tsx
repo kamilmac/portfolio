@@ -121,6 +121,7 @@ export const Onboarding = (props) => {
         position: 'absolute',
         inset: 0,
         pointerEvents: 'none',
+        overflow: 'hidden',
       }}
     >
       <div
@@ -140,6 +141,7 @@ export const Onboarding = (props) => {
           position: 'absolute',
           x: InstructionsPaddingLeft,
           y: h - (INSTRUCTIONS[props.activeStep].h + InstructionsPaddingBottom),
+          maxWidth: INSTRUCTIONS[props.activeStep].w,
           width: INSTRUCTIONS[props.activeStep].w,
           height: INSTRUCTIONS[props.activeStep].h,
           background: InstructionsBGColor,
