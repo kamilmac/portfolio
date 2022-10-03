@@ -9,6 +9,7 @@ import {
   Link,
 } from "react-router-dom";
 import { createRoot } from 'react-dom/client';
+import { Main } from './main';
 
 const RECENT_SKETCH = 18;
 
@@ -30,7 +31,7 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path=":id" element={<Sketch />} />
-        <Route path="/" element={<Navigate replace to={`/${RECENT_SKETCH}`} />} />
+        <Route path="/" element={<Main />} />
       </Routes>
     </BrowserRouter>
   );
