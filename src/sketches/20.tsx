@@ -70,9 +70,8 @@ export default function App() {
           rotation={[-2.38, 0.86, 2.51]}
         />
         <EffectComposer>
-          <DepthOfField focusDistance={0.05} focalLength={0.2} bokehScale={4} height={480} />
+          {/* <DepthOfField focusDistance={0.05} focalLength={0.2} bokehScale={4} height={480} /> */}
           <Noise opacity={0.2} />
-          <Vignette eskil={false} offset={0.2} darkness={1.2} />
         </EffectComposer>
       </Canvas>
     </>
