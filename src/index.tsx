@@ -11,12 +11,10 @@ import {
 import { createRoot } from 'react-dom/client';
 import { Main } from './main';
 
-const RECENT_SKETCH = 18;
-
 const Sketch = () => {
   const { id } = useParams();
 
-  const Component = React.lazy(() => import(`./sketches/${id || RECENT_SKETCH}.tsx`));
+  const Component = React.lazy(() => import(`./sketches/${id}.tsx`));
   return (
     <React.Suspense
       fallback={<>loading...</>}
