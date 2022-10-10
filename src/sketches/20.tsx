@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import React from 'react'
 import { Environment, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
 import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from '@react-three/postprocessing'
@@ -16,9 +16,10 @@ export default function App() {
         style={{
           height: '100vh',
           background: '#111',
-          background: 'radial-gradient( #222 20%, #111 80%)',
+          background: 'radial-gradient( #1d1d1d 20%, #111 80%)',
         }}
         gl={{
+          antialias: false,
           toneMapping: THREE.LinearToneMapping,
           outputEncoding: THREE.sRGBEncoding,
         }}
@@ -28,19 +29,19 @@ export default function App() {
         >
           <mesh>
             <bufferGeometry { ...nodes.base.geometry } />
-            <meshPhysicalMaterial roughness={0.25} metalness={0.} aoMap={materials['base mat'].aoMap} color={'#333'} aoMapIntensity={1} /> :
+            <meshStandardMaterial roughness={0.25} metalness={0.3} aoMap={materials['base mat'].aoMap} color={'#333'} aoMapIntensity={1} /> :
           </mesh>
           <mesh>
             <bufferGeometry { ...nodes.glass.geometry } />
-            <meshPhysicalMaterial roughness={0.1} aoMap={materials['glass mat'].aoMap} color={'#f9d6ce'} aoMapIntensity={1} /> :
+            <meshStandardMaterial  roughness={0.1} aoMap={materials['glass mat'].aoMap} color={'#f9d6ce'} aoMapIntensity={1} /> :
           </mesh>
           <mesh>
             <bufferGeometry { ...nodes.binding.geometry } />
-            <meshPhysicalMaterial roughness={0.55} metalness={0.3} aoMap={materials['binding mat'].aoMap} color={'#000'} aoMapIntensity={1} /> :
+            <meshStandardMaterial roughness={0.55} metalness={0.3} aoMap={materials['binding mat'].aoMap} color={'#000'} aoMapIntensity={1} /> :
           </mesh>
           <mesh>
             <bufferGeometry { ...nodes.tubes.geometry } />
-            <meshPhysicalMaterial roughness={0.1} metalness={0.3} aoMap={materials['tubes mat'].aoMap} color={'#000'} aoMapIntensity={1} /> :
+            <meshStandardMaterial roughness={0.1} metalness={0.3} aoMap={materials['tubes mat'].aoMap} color={'#000'} aoMapIntensity={1} /> :
           </mesh>
         </group>
         <Environment
@@ -61,7 +62,7 @@ export default function App() {
         <PerspectiveCamera
           name="Personal Camera"
           makeDefault={true}
-          far={10000}
+          far={3}
           near={0.1}
           fov={60}
           up={[0, 1, 0]}
@@ -69,13 +70,11 @@ export default function App() {
           rotation={[-2.38, 0.86, 2.51]}
         />
         <EffectComposer>
-          <DepthOfField focusDistance={0.1} focalLength={0.4} bokehScale={4} height={480} />
-          {/* <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} /> */}
-          <Noise opacity={0.1} />
-          <Vignette eskil={false} offset={0.2} darkness={1.5} />
+          <DepthOfField focusDistance={0.05} focalLength={0.2} bokehScale={4} height={480} />
+          <Noise opacity={0.2} />
+          <Vignette eskil={false} offset={0.2} darkness={1.2} />
         </EffectComposer>
       </Canvas>
     </>
   );
 }
-
