@@ -1,14 +1,13 @@
 import * as THREE from 'three'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import React from 'react'
-import { Environment, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
+import { Environment, MeshReflectorMaterial, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
 import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from '@react-three/postprocessing'
 
 useGLTF.preload('/astrohead.glb')
 
 export default function App() {
   const { nodes, materials } = useGLTF('/astrohead.glb')
-  console.log(nodes, materials);
 
   return (
     <>
@@ -33,7 +32,9 @@ export default function App() {
           </mesh>
           <mesh>
             <bufferGeometry { ...nodes.glass.geometry } />
-            <meshStandardMaterial  roughness={0.1} aoMap={materials['glass mat'].aoMap} color={'#f9d6ce'} aoMapIntensity={1} /> :
+            <meshStandardMaterial
+              toneMapped={false} fog={false} 
+              roughness={0.1} aoMap={materials['glass mat'].aoMap} color={'#f9d6ce'} aoMapIntensity={1} /> :
           </mesh>
           <mesh>
             <bufferGeometry { ...nodes.binding.geometry } />
@@ -43,7 +44,24 @@ export default function App() {
             <bufferGeometry { ...nodes.tubes.geometry } />
             <meshStandardMaterial roughness={0.1} metalness={0.3} aoMap={materials['tubes mat'].aoMap} color={'#000'} aoMapIntensity={1} /> :
           </mesh>
+          <mesh
+            position={[0,0.15,0.14]}
+          >
+            <sphereBufferGeometry args={[0.005, 32, 32]} />
+            <meshStandardMaterial emissive={'hotpink'} color={'black'} roughness={1} emissiveIntensity={1}/>
+            <pointLight color={'hotpink'} intensity={0.2}/>
+          </mesh>
         </group>
+        <mesh position={[0, 0, -0.3]} rotation={[0 , 0, 0]}>
+          <planeGeometry args={[50, 50]} />
+          <meshStandardMaterial
+            color="#151515"
+            metalness={0.1}
+            roughness={0.5}
+          />
+        </mesh>
+        <fog attach="fog" args={['#17171b', -1, 1]} />
+        <color attach="background" args={['#17171b']} />
         <Environment
           background={false}
           preset='forest'
@@ -70,10 +88,22 @@ export default function App() {
           rotation={[-2.38, 0.86, 2.51]}
         />
         <EffectComposer>
-          {/* <DepthOfField focusDistance={0.05} focalLength={0.2} bokehScale={4} height={480} /> */}
+          {/* <DepthOfField focusDistance={0.5} focalLength={1.0} bokehScale={4} height={480} /> */}
           <Noise opacity={0.2} />
         </EffectComposer>
+        {/* <fog attach="fog" args={['#17171b', 30, 40]} /> */}
+
       </Canvas>
     </>
   );
 }
+
+const Stuff = () => {
+  const { scene } = useThree();
+  scene.fog = new THREE.FogExp2('hotpink', 1)
+  return (
+    <>
+
+    </>
+  );
+};
