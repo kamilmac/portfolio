@@ -28,13 +28,13 @@ export default function App() {
         >
           <mesh >
             <bufferGeometry { ...nodes.base.geometry } />
-            <meshStandardMaterial roughness={0.25} metalness={0.3} aoMap={materials['base mat'].aoMap} color={'#555'} aoMapIntensity={1} /> :
+            <meshStandardMaterial roughness={0.25} metalness={0.3} aoMap={materials['base mat'].aoMap} color={'#666'} aoMapIntensity={1} /> :
           </mesh>
           <mesh>
             <bufferGeometry { ...nodes.glass.geometry } />
             <meshStandardMaterial
               ref={glass}
-              toneMapped={false} fog={false} 
+              toneMapped={false} fog={false}
               roughness={0.35} aoMap={materials['glass mat'].aoMap} color={'#555'} aoMapIntensity={1} /> :
           </mesh>
           <mesh>
@@ -85,7 +85,7 @@ export default function App() {
           makeDefault={true}
           far={3}
           near={0.1}
-          fov={60}
+          fov={70}
           up={[0, 1, 0]}
           position={[0,0,0.6]}
           rotation={[-2.38, 0.86, 2.51]}
@@ -197,7 +197,7 @@ const LightSphere = (props) => {
     } else {
       pI = 0;
     }
-    setTimeout(next, positions.length-1 === pI ? 600 : 1600)
+    setTimeout(next, positions.length-1 === pI ? 800 : 1600)
   }
 
   const updateMomentum = (curr, target, i, fast) => {
@@ -227,7 +227,7 @@ const LightSphere = (props) => {
         props.glass.current.roughness= 0.12;
       }
       if (pI === 0) {
-        props.glass.current.color.lerp(new THREE.Color("#555"), delta*24);
+        props.glass.current.color.lerp(new THREE.Color("#666"), delta*24);
         props.glass.current.roughness= 0.35;
       }
     }
