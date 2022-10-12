@@ -188,7 +188,7 @@ const LightSphere = (props) => {
         setTimeout(() => {
         }, 800)
       } 
-    }, 2500);
+    }, 2000);
   }, [])
 
   const next = () => {
@@ -223,7 +223,7 @@ const LightSphere = (props) => {
     
     if (props.glass?.current) {
       if (pI > 0) {
-        props.glass.current.color.lerp(new THREE.Color("#f9d6ce"), delta/2);
+        props.glass.current.color.lerp(new THREE.Color("#f9d6ce"), delta/2.4);
         props.glass.current.roughness= 0.12;
       }
       if (pI === 0) {
