@@ -242,7 +242,7 @@ const LightSphere = (props) => {
     >
       <sphereBufferGeometry args={[0.005 + getRand()/64, 32, 32]} />
       <meshStandardMaterial emissive={'hotpink'} color={'black'} roughness={1} emissiveIntensity={3}/>
-      <pointLight color={'hotpink'} intensity={0.07}/>
+      <pointLight color={'hotpink'} intensity={0.05}/>
     </mesh>
   );
 };
