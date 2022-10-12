@@ -55,12 +55,12 @@ export default function App() {
           <LightSphere />
           
         </group>
-        {/* <mesh position={[0, 0, -0.3]} rotation={[0 , 0, 0]}>
+        {/* <mesh position={[0, 0, -0.9]} rotation={[0 , 0, 0]}>
           <planeGeometry args={[50, 50]} />
           <meshStandardMaterial
             color="#151515"
             metalness={0.6}
-            roughness={0.3}
+            roughness={0.0}
           />
         </mesh> */}
         <fog attach="fog" args={['#17171b', -1, 1.4]} />
@@ -112,6 +112,14 @@ const LightSphere = (props) => {
   const ref = React.useRef();
   const left = getRand() > 0 ? true : false;
   const positions = [
+    {
+      position: {
+        x: 0,
+        y: 0.14,
+        z: 0,
+      },
+      gravity: 1,
+    },
     {
       position: {
         x: 0,
@@ -188,7 +196,7 @@ const LightSphere = (props) => {
         setTimeout(() => {
         }, 800)
       } 
-    }, 2000);
+    }, 1600);
   }, [])
 
   const next = () => {
@@ -205,7 +213,10 @@ const LightSphere = (props) => {
     const dir = diff > 0 ? +1 : -1;
     const acc = fast ? acceleration*4 : acceleration;
 
-    momentum[i] = (momentum[i] + acc * dir) * Math.abs(diff); 
+    momentum[i] = (momentum[i] + acc * dir) * Math.abs(diff);
+    // if (momentum[i] < 0.00001) {
+    //   momentum[i] = Math.sin(momentum[i]+Math.abs(diff)/50)
+    // }
   }
 
   useFrame((state, delta) => {
