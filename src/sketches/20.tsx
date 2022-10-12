@@ -33,7 +33,7 @@ export default function App() {
             <bufferGeometry { ...nodes.glass.geometry } />
             <meshStandardMaterial
               toneMapped={false} fog={false} 
-              roughness={0.1} aoMap={materials['glass mat'].aoMap} color={'#f9d6ce'} aoMapIntensity={1} /> :
+              roughness={0.14} aoMap={materials['glass mat'].aoMap} color={'#f9d6ce'} aoMapIntensity={1} /> :
           </mesh>
           <mesh>
             <bufferGeometry { ...nodes.binding.geometry } />
@@ -51,17 +51,16 @@ export default function App() {
           <LightSphere />
           <LightSphere />
           <LightSphere />
-          <LightSphere />
-          <LightSphere />
+          
         </group>
-        <mesh position={[0, 0, -0.3]} rotation={[0 , 0, 0]}>
+        {/* <mesh position={[0, 0, -0.3]} rotation={[0 , 0, 0]}>
           <planeGeometry args={[50, 50]} />
           <meshStandardMaterial
             color="#151515"
             metalness={0.6}
             roughness={0.3}
           />
-        </mesh>
+        </mesh> */}
         <fog attach="fog" args={['#17171b', -1, 1.4]} />
         <color attach="background" args={['#17171b']} />
         <Environment
@@ -86,12 +85,12 @@ export default function App() {
           near={0.1}
           fov={60}
           up={[0, 1, 0]}
-          position={[0,0,0.4]}
+          position={[-0.5,0,0.6]}
           rotation={[-2.38, 0.86, 2.51]}
         />
         <EffectComposer>
-          {/* <DepthOfField focusDistance={0.5} focalLength={1.0} bokehScale={4} height={480} /> */}
-          <Noise opacity={0.12} />
+          <DepthOfField focusDistance={0.5} focalLength={1.3} bokehScale={4} height={480} />
+          <Noise opacity={0.06} />
         </EffectComposer>
         {/* <fog attach="fog" args={['#17171b', 30, 40]} /> */}
 
@@ -109,6 +108,7 @@ const getRand = () => {
 
 const LightSphere = () => {
   const ref = React.useRef();
+  const left = getRand() > 0 ? true : false;
   const positions = [
     {
       position: {
@@ -136,6 +136,38 @@ const LightSphere = () => {
     },
     {
       position: {
+        x: left ? 0.2 : -0.2,
+        y: 0.1 + getRand(),
+        z: 0.2 + getRand(),
+      },
+      gravity: 1,
+    },
+    {
+      position: {
+        x: left ? 0.2 : -0.2,
+        y: 0.15 + getRand(),
+        z: -0.2 + getRand(),
+      },
+      gravity: 1,
+    },
+    {
+      position: {
+        x: left ? -0.2 : 0.2,
+        y: 0.15 + getRand(),
+        z: -0.2 + getRand(),
+      },
+      gravity: 1,
+    },
+    {
+      position: {
+        x: left ? -0.2 : 0.2,
+        y: 0.15 + getRand(),
+        z: 0.2 + getRand(),
+      },
+      gravity: 1,
+    },
+    {
+      position: {
         x: 0,
         y: 0.1,
         z: 0.1,
@@ -145,18 +177,16 @@ const LightSphere = () => {
   ]
   let pI = 0;
   let momentum = [0,0,0]
-  
   let acceleration = 0.03
   
   React.useEffect(() => {
     setInterval(() => {
       if (positions[pI+1]) {
         pI += 1;
-        console.log(positions[pI])
       } else {
         pI = 0;
       }
-    }, 3000);
+    }, 2500);
   }, [])
 
   const updateMomentum = (curr, target, i) => {
@@ -176,14 +206,6 @@ const LightSphere = () => {
     ref.current.position.x += momentum[0];
     ref.current.position.y += momentum[1];
     ref.current.position.z += momentum[2];
-    
-    let scale = Math.abs(momentum[0]) + Math.abs(momentum[1]) + Math.abs(momentum[2])
-    
-    scale = 1 / (scale * 100)
-    // console.log(scale);
-    // ref.current.scale.x = scale;
-    // ref.current.scale.y = scale;
-    // ref.current.scale.z = scale;
   });
 
   return (
@@ -192,8 +214,8 @@ const LightSphere = () => {
       ref={ref}
     >
       <sphereBufferGeometry args={[0.005, 32, 32]} />
-      <meshStandardMaterial emissive={'hotpink'} color={'black'} roughness={1} emissiveIntensity={1}/>
-      <pointLight color={'hotpink'} intensity={0.08}/>
+      <meshStandardMaterial emissive={'hotpink'} color={'black'} roughness={1} emissiveIntensity={3}/>
+      <pointLight color={'hotpink'} intensity={0.1}/>
     </mesh>
   );
 };
