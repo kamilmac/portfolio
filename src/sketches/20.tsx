@@ -8,6 +8,7 @@ useGLTF.preload('/astrohead.glb')
 
 export default function App() {
   const { nodes, materials } = useGLTF('/astrohead.glb')
+  const glass = React.useRef();
   console.log(nodes, materials);
   return (
     <>
@@ -25,15 +26,16 @@ export default function App() {
         <group
           position={[0,-0.1,0]}
         >
-          <mesh>
+          <mesh >
             <bufferGeometry { ...nodes.base.geometry } />
-            <meshStandardMaterial roughness={0.25} metalness={0.3} aoMap={materials['base mat'].aoMap} color={'#333'} aoMapIntensity={1} /> :
+            <meshStandardMaterial roughness={0.25} metalness={0.3} aoMap={materials['base mat'].aoMap} color={'#555'} aoMapIntensity={1} /> :
           </mesh>
           <mesh>
             <bufferGeometry { ...nodes.glass.geometry } />
             <meshStandardMaterial
+              ref={glass}
               toneMapped={false} fog={false} 
-              roughness={0.14} aoMap={materials['glass mat'].aoMap} color={'#f9d6ce'} aoMapIntensity={1} /> :
+              roughness={0.35} aoMap={materials['glass mat'].aoMap} color={'#555'} aoMapIntensity={1} /> :
           </mesh>
           <mesh>
             <bufferGeometry { ...nodes.binding.geometry } />
@@ -43,7 +45,7 @@ export default function App() {
             <bufferGeometry { ...nodes.tubes.geometry } />
             <meshStandardMaterial roughness={0.1} metalness={0.3} aoMap={materials['tubes mat'].aoMap} color={'#000'} aoMapIntensity={1} /> :
           </mesh>
-          <LightSphere />
+          <LightSphere glass={glass} />
           <LightSphere />
           <LightSphere />
           <LightSphere />
@@ -85,7 +87,7 @@ export default function App() {
           near={0.1}
           fov={60}
           up={[0, 1, 0]}
-          position={[-0.5,0,0.6]}
+          position={[0,0,0.6]}
           rotation={[-2.38, 0.86, 2.51]}
         />
         <EffectComposer>
@@ -106,14 +108,14 @@ const getRand = () => {
 }
 
 
-const LightSphere = () => {
+const LightSphere = (props) => {
   const ref = React.useRef();
   const left = getRand() > 0 ? true : false;
   const positions = [
     {
       position: {
         x: 0,
-        y: 0,
+        y: 0.14,
         z: 0,
       },
       gravity: 1,
@@ -144,7 +146,7 @@ const LightSphere = () => {
     },
     {
       position: {
-        x: left ? 0.2 : -0.2,
+        x: left ? 0.22 : -0.22,
         y: 0.15 + getRand(),
         z: -0.2 + getRand(),
       },
@@ -152,7 +154,7 @@ const LightSphere = () => {
     },
     {
       position: {
-        x: left ? -0.2 : 0.2,
+        x: left ? -0.23 : 0.23,
         y: 0.15 + getRand(),
         z: -0.2 + getRand(),
       },
@@ -169,43 +171,68 @@ const LightSphere = () => {
     {
       position: {
         x: 0,
-        y: 0.1,
+        y: 0.14,
         z: 0.1,
       },
-      gravity: 1,
-    }
+      gravity: 0,
+    },
   ]
   let pI = 0;
   let momentum = [0,0,0]
-  let acceleration = 0.03
+  let acceleration = 0.04 + getRand()/8
   
   React.useEffect(() => {
-    setInterval(() => {
-      if (positions[pI+1]) {
-        pI += 1;
-      } else {
-        pI = 0;
-      }
+    setTimeout(() => {
+      next()
+      if(props.glass && props.glass.current) {
+        setTimeout(() => {
+        }, 800)
+      } 
     }, 2500);
   }, [])
 
-  const updateMomentum = (curr, target, i) => {
+  const next = () => {
+    if (positions[pI+1]) {
+      pI += 1;
+    } else {
+      pI = 0;
+    }
+    setTimeout(next, positions.length-1 === pI ? 600 : 1600)
+  }
+
+  const updateMomentum = (curr, target, i, fast) => {
     const diff = target - curr;
     const dir = diff > 0 ? +1 : -1;
-    momentum[i] = (momentum[i] + acceleration * dir) * Math.abs(diff); 
+    const acc = fast ? acceleration*3 : acceleration;
+
+    momentum[i] = (momentum[i] + acc * dir) * Math.abs(diff); 
   }
 
   useFrame((state, delta) => {
     if (!ref.current) { return; }
     const targetPos = positions[pI];
     
-    updateMomentum(ref.current.position.x, targetPos.position.x, 0);
-    updateMomentum(ref.current.position.y, targetPos.position.y, 1);
-    updateMomentum(ref.current.position.z, targetPos.position.z, 2);
+    updateMomentum(ref.current.position.x, targetPos.position.x, 0, pI === positions.length-1);
+    updateMomentum(ref.current.position.y, targetPos.position.y, 1, pI === positions.length-1);
+    updateMomentum(ref.current.position.z, targetPos.position.z, 2, pI === positions.length-1);
 
     ref.current.position.x += momentum[0];
     ref.current.position.y += momentum[1];
     ref.current.position.z += momentum[2];
+
+    
+    if (props.glass?.current) {
+      if (pI > 0) {
+        props.glass.current.color.lerp(new THREE.Color("#f9d6ce"), delta/2);
+        props.glass.current.roughness= 0.12;
+      }
+      if (pI === 0) {
+        props.glass.current.color.lerp(new THREE.Color("#555"), delta*24);
+        props.glass.current.roughness= 0.35;
+      }
+    }
+
+    ref.current.scale.lerp(new THREE.Vector3(targetPos.gravity, targetPos.gravity, targetPos.gravity), delta*8);
   });
 
   return (
@@ -213,9 +240,9 @@ const LightSphere = () => {
       position={[0,0,0]}
       ref={ref}
     >
-      <sphereBufferGeometry args={[0.005, 32, 32]} />
+      <sphereBufferGeometry args={[0.005 + getRand()/64, 32, 32]} />
       <meshStandardMaterial emissive={'hotpink'} color={'black'} roughness={1} emissiveIntensity={3}/>
-      <pointLight color={'hotpink'} intensity={0.1}/>
+      <pointLight color={'hotpink'} intensity={0.07}/>
     </mesh>
   );
 };
