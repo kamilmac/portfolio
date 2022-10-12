@@ -196,7 +196,7 @@ const LightSphere = (props) => {
         setTimeout(() => {
         }, 800)
       } 
-    }, 1600);
+    }, 2000);
   }, [])
 
   const next = () => {
@@ -205,7 +205,7 @@ const LightSphere = (props) => {
     } else {
       pI = 0;
     }
-    setTimeout(next, positions.length-1 === pI ? 700 : 1600)
+    setTimeout(next, positions.length-1 === pI || 1 === pI ? 700 : 1600)
   }
 
   const updateMomentum = (curr, target, i, fast) => {
