@@ -197,13 +197,13 @@ const LightSphere = (props) => {
     } else {
       pI = 0;
     }
-    setTimeout(next, positions.length-1 === pI ? 800 : 1600)
+    setTimeout(next, positions.length-1 === pI ? 500 : 1600)
   }
 
   const updateMomentum = (curr, target, i, fast) => {
     const diff = target - curr;
     const dir = diff > 0 ? +1 : -1;
-    const acc = fast ? acceleration*3 : acceleration;
+    const acc = fast ? acceleration*4 : acceleration;
 
     momentum[i] = (momentum[i] + acc * dir) * Math.abs(diff); 
   }
@@ -227,7 +227,7 @@ const LightSphere = (props) => {
         props.glass.current.roughness= 0.12;
       }
       if (pI === 0) {
-        props.glass.current.color.lerp(new THREE.Color("#666"), delta*24);
+        props.glass.current.color.lerp(new THREE.Color("#666"), delta*20);
         props.glass.current.roughness= 0.35;
       }
     }
