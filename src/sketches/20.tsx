@@ -66,7 +66,7 @@ export default function App() {
             transmission={1}
             opacity={0.6}
             transparent={true}
-            reflectivity={0.4}
+            reflectivity={0.8}
             envMapIntensity={0}
           />
         </mesh>
