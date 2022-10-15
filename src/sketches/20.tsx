@@ -57,7 +57,7 @@ export default function App() {
           <LightSphere />
           
         </group>
-        <mesh position={[0, 0, 0.4]} rotation={[0 , 0, 0]}>
+        {/* <mesh position={[0, 0, 0.4]} rotation={[0 , 0, 0]}>
           <planeGeometry args={[50, 50]} />
           <meshPhysicalMaterial
             color={'#ffffff'}
@@ -69,7 +69,7 @@ export default function App() {
             reflectivity={0.8}
             envMapIntensity={0}
           />
-        </mesh>
+        </mesh> */}
         {/* <color attach="background" args={['#17171b']} /> */}
         <Environment
           background={false}
