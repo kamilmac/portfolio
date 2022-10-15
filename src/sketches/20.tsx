@@ -1,9 +1,9 @@
 import * as THREE from 'three'
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import React from 'react'
 import { Environment, MeshReflectorMaterial, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
 import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from '@react-three/postprocessing'
-import { Vector3 } from 'three'
+import { TextureLoader, Vector3 } from 'three'
 
 useGLTF.preload('/astrohead.glb')
 
@@ -11,7 +11,13 @@ export default function App() {
   const { nodes, materials } = useGLTF('/astrohead.glb')
   const glass = React.useRef();
   console.log(nodes, materials);
-
+  
+  const noiseMap = useLoader(TextureLoader, 'noise.jpg');
+  noiseMap.repeat.set(32,32)
+  noiseMap.offset.set( 0, 0 );
+  noiseMap.wrapS = noiseMap.wrapT = THREE.RepeatWrapping;
+  console.log(noiseMap);
+  
   return (
     <>
       <Canvas
@@ -57,19 +63,24 @@ export default function App() {
           <LightSphere />
           
         </group>
-        {/* <mesh position={[0, 0, 0.4]} rotation={[0 , 0, 0]}>
-          <planeGeometry args={[50, 50]} />
+        <mesh position={[0, 0, 0.4]} rotation={[0 , 0, 0]}>
+          <planeGeometry args={[1, 1]} />
           <meshPhysicalMaterial
             color={'#ffffff'}
-            metalness={0.3}
-            roughness={0.9}
-            transmission={1}
-            opacity={0.6}
+            // roughnessMap={noiseMap}
+            metalness={0.2}
+            roughness={0.93}
+            transmission={0.8}
+            opacity={0.8}
             transparent={true}
-            reflectivity={0.8}
-            envMapIntensity={0}
+            reflectivity={0.44}
+            envMapIntensity={0.0}
+            map={noiseMap}
+            // alphaMap={noiseMap}
+            // envMap={noiseMap}
+            // lightMap={noiseMap}
           />
-        </mesh> */}
+        </mesh>
         {/* <color attach="background" args={['#17171b']} /> */}
         <Environment
           background={false}
