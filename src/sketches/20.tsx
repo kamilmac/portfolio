@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import React from 'react'
 import { Environment, MeshReflectorMaterial, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
 import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from '@react-three/postprocessing'
+import { Vector3 } from 'three'
 
 useGLTF.preload('/astrohead.glb')
 
@@ -10,6 +11,7 @@ export default function App() {
   const { nodes, materials } = useGLTF('/astrohead.glb')
   const glass = React.useRef();
   console.log(nodes, materials);
+
   return (
     <>
       <Canvas
@@ -69,7 +71,7 @@ export default function App() {
           background={false}
           preset='forest'
         />
-        <OrbitControls
+        {/* <OrbitControls
           minPolarAngle={0.5}
           maxPolarAngle={1.5}
           rotateSpeed={0.6}
@@ -79,28 +81,41 @@ export default function App() {
           minDistance={0.3}
           maxDistance={20.5}
           enablePan={false}
-        />
-        <PerspectiveCamera
-          name="Personal Camera"
-          makeDefault={true}
-          far={3}
-          near={0.1}
-          fov={70}
-          up={[0, 1, 0]}
-          position={[0,0,0.6]}
-          rotation={[-2.38, 0.86, 2.51]}
-        />
+        /> */}
+        <Camera />      
         <EffectComposer>
           <DepthOfField focusDistance={0.5} focalLength={1.3} bokehScale={4} height={480} />
           <Noise opacity={0.06} />
         </EffectComposer>
-        {/* <fog attach="fog" args={['#17171b', 30, 40]} /> */}
 
       </Canvas>
     </>
   );
 }
 
+
+const Camera = () => {
+  const { viewport } = useThree();
+  const ref = React.useRef();
+  useFrame(({ mouse }) => {
+    if (!ref.current) { return null; }
+    const x = (mouse.x * viewport.width) / 2 / 60
+    const y = (mouse.y * viewport.height) / 2 / 80
+    ref.current.position.set(x, y, 0.6)
+    ref.current.lookAt(new Vector3(0,0,0));
+  })
+ return (
+  <PerspectiveCamera
+    ref={ref}
+    name="Personal Camera"
+    makeDefault={true}
+    far={3}
+    near={0.1}
+    fov={70}
+    up={[0, 1, 0]}
+  />
+ );
+}
 
 
 const getRand = () => {
@@ -192,10 +207,6 @@ const LightSphere = (props) => {
   React.useEffect(() => {
     setTimeout(() => {
       next()
-      if(props.glass && props.glass.current) {
-        setTimeout(() => {
-        }, 800)
-      } 
     }, 2000);
   }, [])
 
@@ -205,7 +216,7 @@ const LightSphere = (props) => {
     } else {
       pI = 0;
     }
-    setTimeout(next, positions.length-1 === pI || 1 === pI ? 700 : 1600)
+    setTimeout(next, positions.length-1 === pI || 1 === pI ? 800 : 1600)
   }
 
   const updateMomentum = (curr, target, i, fast) => {
