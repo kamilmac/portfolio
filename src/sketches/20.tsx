@@ -57,36 +57,29 @@ export default function App() {
           <LightSphere />
           
         </group>
-        {/* <mesh position={[0, 0, -0.9]} rotation={[0 , 0, 0]}>
+        <mesh position={[0, 0, 0.4]} rotation={[0 , 0, 0]}>
           <planeGeometry args={[50, 50]} />
-          <meshStandardMaterial
-            color="#151515"
-            metalness={0.6}
-            roughness={0.0}
+          <meshPhysicalMaterial
+            color={'#ffffff'}
+            metalness={0.3}
+            roughness={0.9}
+            transmission={1}
+            opacity={0.6}
+            transparent={true}
+            reflectivity={0.4}
+            envMapIntensity={0}
           />
-        </mesh> */}
-        <fog attach="fog" args={['#17171b', -1, 1.4]} />
-        <color attach="background" args={['#17171b']} />
+        </mesh>
+        {/* <color attach="background" args={['#17171b']} /> */}
         <Environment
           background={false}
           preset='forest'
         />
-        {/* <OrbitControls
-          minPolarAngle={0.5}
-          maxPolarAngle={1.5}
-          rotateSpeed={0.6}
-          autoRotate={false}
-          autoRotateSpeed={0.4}
-          enableDamping
-          minDistance={0.3}
-          maxDistance={20.5}
-          enablePan={false}
-        /> */}
+        
         <Camera />      
-        <EffectComposer>
-          <DepthOfField focusDistance={0.5} focalLength={1.3} bokehScale={4} height={480} />
+        {/* <EffectComposer>
           <Noise opacity={0.06} />
-        </EffectComposer>
+        </EffectComposer> */}
 
       </Canvas>
     </>
