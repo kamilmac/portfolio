@@ -73,11 +73,11 @@ export default function App() {
               color={'#ffffff'}
               // roughnessMap={noiseMap}
               metalness={0.2}
-              roughness={0.97}
+              roughness={0.93}
               transmission={0.8}
               opacity={0.8}
               transparent={true}
-              reflectivity={0.45}
+              reflectivity={0.48}
               envMapIntensity={0.1}
               // map={noiseMap}
               // bumpMap={noiseMap}
