@@ -30,6 +30,7 @@ export default function App() {
           toneMapping: THREE.LinearToneMapping,
           outputEncoding: THREE.sRGBEncoding,
         }}
+        dpr={window.devicePixelRatio}
       >
         <group
           position={[0,-0.1,0]}
