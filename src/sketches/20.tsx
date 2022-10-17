@@ -3,7 +3,7 @@ import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import React from 'react'
 import { Environment, MeshReflectorMaterial, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
 import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from '@react-three/postprocessing'
-import { TextureLoader, Vector3 } from 'three'
+import { Clock, TextureLoader, Vector3 } from 'three'
 
 useGLTF.preload('/astrohead.glb')
 
@@ -42,7 +42,7 @@ export default function App() {
             <bufferGeometry { ...nodes.glass.geometry } />
             <meshStandardMaterial
               ref={glass}
-              toneMapped={false} fog={false}
+              toneMapped={false} fog={true}
               roughness={0.35} aoMap={materials['glass mat'].aoMap} color={'#555'} aoMapIntensity={1} /> :
           </mesh>
           <mesh>
@@ -74,8 +74,9 @@ export default function App() {
             opacity={0.8}
             transparent={true}
             reflectivity={0.44}
-            envMapIntensity={0.0}
+            envMapIntensity={0.1}
             map={noiseMap}
+            // bumpMap={noiseMap}
             // alphaMap={noiseMap}
             // envMap={noiseMap}
             // lightMap={noiseMap}
@@ -137,7 +138,9 @@ const LightSphere = (props) => {
         y: 0.14,
         z: 0,
       },
-      gravity: 1,
+      next: 2000,
+      scale: 1,
+      helmetOff: true,
     },
     {
       position: {
@@ -145,7 +148,8 @@ const LightSphere = (props) => {
         y: 0.14,
         z: 0,
       },
-      gravity: 1,
+      next: 800,
+      scale: 1,
     },
     {
       position: {
@@ -153,7 +157,8 @@ const LightSphere = (props) => {
         y: -0.1 - getRand(), // -0.1 : -0.15
         z: getRand(),
       },
-      gravity: 1,
+      next: 1600,
+      scale: 1,
     },
     {
       position: {
@@ -161,7 +166,8 @@ const LightSphere = (props) => {
         y: 0.1 + getRand(),
         z: 0.2 + getRand(),
       },
-      gravity: 1,
+      next: 1600,
+      scale: 1,
     },
     {
       position: {
@@ -169,7 +175,8 @@ const LightSphere = (props) => {
         y: 0.1 + getRand(),
         z: 0.2 + getRand(),
       },
-      gravity: 1,
+      next: 1600,
+      scale: 1,
     },
     {
       position: {
@@ -177,7 +184,8 @@ const LightSphere = (props) => {
         y: 0.15 + getRand(),
         z: -0.2 + getRand(),
       },
-      gravity: 1,
+      next: 1600,
+      scale: 1,
     },
     {
       position: {
@@ -185,7 +193,8 @@ const LightSphere = (props) => {
         y: 0.15 + getRand(),
         z: -0.2 + getRand(),
       },
-      gravity: 1,
+      next: 1600,
+      scale: 1,
     },
     {
       position: {
@@ -193,7 +202,8 @@ const LightSphere = (props) => {
         y: 0.15 + getRand(),
         z: 0.2 + getRand(),
       },
-      gravity: 1,
+      next: 1600,
+      scale: 1,
     },
     {
       position: {
@@ -201,7 +211,8 @@ const LightSphere = (props) => {
         y: 0.14,
         z: 0.1,
       },
-      gravity: 0,
+      next: 600,
+      scale: 0,
     },
   ]
   let pI = 0;
@@ -211,7 +222,7 @@ const LightSphere = (props) => {
   React.useEffect(() => {
     setTimeout(() => {
       next()
-    }, 2000);
+    }, positions[pI].next);
   }, [])
 
   const next = () => {
@@ -220,45 +231,45 @@ const LightSphere = (props) => {
     } else {
       pI = 0;
     }
-    setTimeout(next, positions.length-1 === pI || 1 === pI ? 800 : 1600)
+    setTimeout(next, positions[pI].next)
   }
 
-  const updateMomentum = (curr, target, i, fast) => {
+  const updateMomentum = (curr, target, i, fast, delta) => {
     const diff = target - curr;
     const dir = diff > 0 ? +1 : -1;
-    const acc = fast ? acceleration*4 : acceleration;
+    const deltaAcc = acceleration * delta * 120;
+    const acc = fast ? deltaAcc*4 : deltaAcc;
 
-    momentum[i] = (momentum[i] + acc * dir) * Math.abs(diff);
-    // if (momentum[i] < 0.00001) {
-    //   momentum[i] = Math.sin(momentum[i]+Math.abs(diff)/50)
-    // }
+    return (momentum[i] + acc * dir) * Math.abs(diff);
   }
 
   useFrame((state, delta) => {
     if (!ref.current) { return; }
+    // console.log(Math.floor(state.clock.elapsedTime*10));
+    
+    
+    // if (!Math.floor(state.clock.elapsedTime) % 10) {
+    //   console.log('yo');
+      
+    // }
+    
     const targetPos = positions[pI];
     
-    updateMomentum(ref.current.position.x, targetPos.position.x, 0, pI === positions.length-1);
-    updateMomentum(ref.current.position.y, targetPos.position.y, 1, pI === positions.length-1);
-    updateMomentum(ref.current.position.z, targetPos.position.z, 2, pI === positions.length-1);
-
-    ref.current.position.x += momentum[0];
-    ref.current.position.y += momentum[1];
-    ref.current.position.z += momentum[2];
-
+    ref.current.position.x += updateMomentum(ref.current.position.x, targetPos.position.x, 0, pI === positions.length-1, delta);
+    ref.current.position.y += updateMomentum(ref.current.position.y, targetPos.position.y, 1, pI === positions.length-1, delta);
+    ref.current.position.z += updateMomentum(ref.current.position.z, targetPos.position.z, 2, pI === positions.length-1, delta);
     
     if (props.glass?.current) {
-      if (pI > 0) {
-        props.glass.current.color.lerp(new THREE.Color("#f9d6ce"), delta/2.4);
-        props.glass.current.roughness= 0.12;
-      }
-      if (pI === 0) {
+      if (targetPos.helmetOff) {
         props.glass.current.color.lerp(new THREE.Color("#666"), delta*20);
-        props.glass.current.roughness= 0.35;
+        props.glass.current.roughness = 0.35;
+      } else {
+        props.glass.current.color.lerp(new THREE.Color("#f9d6ce"), delta/2.4);
+        props.glass.current.roughness = 0.12;
       }
     }
 
-    ref.current.scale.lerp(new THREE.Vector3(targetPos.gravity, targetPos.gravity, targetPos.gravity), delta*8);
+    ref.current.scale.lerp(new THREE.Vector3(targetPos.scale, targetPos.scale, targetPos.scale), delta*8);
   });
 
   return (
