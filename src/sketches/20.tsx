@@ -148,7 +148,7 @@ const LightSphere = (props) => {
         y: 0.14,
         z: 0,
       },
-      next: 800,
+      next: 2800,
       scale: 1,
     },
     {
@@ -157,7 +157,7 @@ const LightSphere = (props) => {
         y: -0.1 - getRand(), // -0.1 : -0.15
         z: getRand(),
       },
-      next: 1600,
+      next: 4400,
       scale: 1,
     },
     {
@@ -166,7 +166,7 @@ const LightSphere = (props) => {
         y: 0.1 + getRand(),
         z: 0.2 + getRand(),
       },
-      next: 1600,
+      next: 6000,
       scale: 1,
     },
     {
@@ -175,7 +175,7 @@ const LightSphere = (props) => {
         y: 0.1 + getRand(),
         z: 0.2 + getRand(),
       },
-      next: 1600,
+      next: 7600,
       scale: 1,
     },
     {
@@ -184,7 +184,7 @@ const LightSphere = (props) => {
         y: 0.15 + getRand(),
         z: -0.2 + getRand(),
       },
-      next: 1600,
+      next: 9200,
       scale: 1,
     },
     {
@@ -193,7 +193,7 @@ const LightSphere = (props) => {
         y: 0.15 + getRand(),
         z: -0.2 + getRand(),
       },
-      next: 1600,
+      next: 10800,
       scale: 1,
     },
     {
@@ -202,7 +202,7 @@ const LightSphere = (props) => {
         y: 0.15 + getRand(),
         z: 0.2 + getRand(),
       },
-      next: 1600,
+      next: 12400,
       scale: 1,
     },
     {
@@ -211,19 +211,20 @@ const LightSphere = (props) => {
         y: 0.14,
         z: 0.1,
       },
-      next: 600,
+      next: 13000,
       scale: 0,
     },
   ]
   let pI = 0;
   let momentum = [0,0,0]
   let acceleration = 0.04 + getRand()/8
-  
-  React.useEffect(() => {
-    setTimeout(() => {
-      next()
-    }, positions[pI].next);
-  }, [])
+  let step = 0;
+  let time = 0;
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     next()
+  //   }, positions[pI].next);
+  // }, [])
 
   const next = () => {
     if (positions[pI+1]) {
@@ -231,7 +232,7 @@ const LightSphere = (props) => {
     } else {
       pI = 0;
     }
-    setTimeout(next, positions[pI].next)
+    // setTimeout(next, positions[pI].next)
   }
 
   const updateMomentum = (curr, target, i, fast, delta) => {
@@ -245,22 +246,22 @@ const LightSphere = (props) => {
 
   useFrame((state, delta) => {
     if (!ref.current) { return; }
-    // console.log(Math.floor(state.clock.elapsedTime*10));
     
+    time = time + delta * 1000;
+    if(time > positions[step].next) {
+      step < positions.length - 1 ?
+        step +=1 :
+        step = time = 0;
+    }
     
-    // if (!Math.floor(state.clock.elapsedTime) % 10) {
-    //   console.log('yo');
-      
-    // }
+    const target = positions[step];
     
-    const targetPos = positions[pI];
-    
-    ref.current.position.x += updateMomentum(ref.current.position.x, targetPos.position.x, 0, pI === positions.length-1, delta);
-    ref.current.position.y += updateMomentum(ref.current.position.y, targetPos.position.y, 1, pI === positions.length-1, delta);
-    ref.current.position.z += updateMomentum(ref.current.position.z, targetPos.position.z, 2, pI === positions.length-1, delta);
+    ref.current.position.x += updateMomentum(ref.current.position.x, target.position.x, 0, step === positions.length-1, delta);
+    ref.current.position.y += updateMomentum(ref.current.position.y, target.position.y, 1, step === positions.length-1, delta);
+    ref.current.position.z += updateMomentum(ref.current.position.z, target.position.z, 2, step === positions.length-1, delta);
     
     if (props.glass?.current) {
-      if (targetPos.helmetOff) {
+      if (target.helmetOff) {
         props.glass.current.color.lerp(new THREE.Color("#666"), delta*20);
         props.glass.current.roughness = 0.35;
       } else {
@@ -269,7 +270,7 @@ const LightSphere = (props) => {
       }
     }
 
-    ref.current.scale.lerp(new THREE.Vector3(targetPos.scale, targetPos.scale, targetPos.scale), delta*8);
+    ref.current.scale.lerp(new THREE.Vector3(target.scale, target.scale, target.scale), delta*8);
   });
 
   return (
