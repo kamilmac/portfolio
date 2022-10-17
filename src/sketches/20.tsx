@@ -160,7 +160,7 @@ const LightSphere = (props) => {
     {
       position: {
         x: getRand(),
-        y: -0.1 - getRand(), // -0.1 : -0.15
+        y: -0.13 - getRand(), // -0.1 : -0.15
         z: getRand(),
       },
       next: 4400,
@@ -222,7 +222,7 @@ const LightSphere = (props) => {
     },
   ]
   let momentum = [0,0,0]
-  let acceleration = 0.04 + getRand()/8
+  let acceleration = 0.06 + getRand()/8
   let step = 0;
   let time = 0;
 
@@ -239,7 +239,7 @@ const LightSphere = (props) => {
     if (!ref.current) { return; }
     
     time = time + delta * 1000;
-    if(time > positions[step].next) {
+    if(time > positions[step].next/1.2) {
       step < positions.length - 1 ?
         step +=1 :
         step = time = 0;
