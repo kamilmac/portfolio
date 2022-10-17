@@ -123,13 +123,11 @@ const Camera = () => {
 }
 
 
-const getRand = () => {
-  return Math.random() * 0.1 - 0.05;
-}
-
-
 const LightSphere = (props) => {
   const ref = React.useRef();
+  const getRand = () => {
+    return Math.random() * 0.1 - 0.05;
+  }
   const left = getRand() > 0 ? true : false;
   const positions = [
     {
@@ -215,25 +213,10 @@ const LightSphere = (props) => {
       scale: 0,
     },
   ]
-  let pI = 0;
   let momentum = [0,0,0]
   let acceleration = 0.04 + getRand()/8
   let step = 0;
   let time = 0;
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     next()
-  //   }, positions[pI].next);
-  // }, [])
-
-  const next = () => {
-    if (positions[pI+1]) {
-      pI += 1;
-    } else {
-      pI = 0;
-    }
-    // setTimeout(next, positions[pI].next)
-  }
 
   const updateMomentum = (curr, target, i, fast, delta) => {
     const diff = target - curr;
