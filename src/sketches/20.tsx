@@ -16,7 +16,8 @@ export default function App() {
   noiseMap.repeat.set(32,32)
   noiseMap.offset.set( 0, 0 );
   noiseMap.wrapS = noiseMap.wrapT = THREE.RepeatWrapping;
-  console.log(noiseMap);
+  
+  const isMobile = (screen.width < 480) || (screen.height < 480);
   
   return (
     <>
@@ -33,7 +34,7 @@ export default function App() {
         dpr={window.devicePixelRatio}
       >
         <group
-          position={[0,-0.1,0]}
+          position={[0,-0.1, isMobile ? -0.4 : 0]}
         >
           <mesh >
             <bufferGeometry { ...nodes.base.geometry } />
@@ -64,25 +65,28 @@ export default function App() {
           <LightSphere />
           
         </group>
-        <mesh position={[0, 0, 0.4]} rotation={[0 , 0, 0]}>
-          <planeGeometry args={[1, 1]} />
-          <meshPhysicalMaterial
-            color={'#ffffff'}
-            // roughnessMap={noiseMap}
-            metalness={0.2}
-            roughness={0.93}
-            transmission={0.8}
-            opacity={0.8}
-            transparent={true}
-            reflectivity={0.44}
-            envMapIntensity={0.1}
-            map={noiseMap}
-            // bumpMap={noiseMap}
-            // alphaMap={noiseMap}
-            // envMap={noiseMap}
-            // lightMap={noiseMap}
-          />
-        </mesh>
+        {
+          !isMobile &&
+          <mesh position={[0, 0, 0.4]} rotation={[0 , 0, 0]}>
+            <planeGeometry args={[1, 1]} />
+            <meshPhysicalMaterial
+              color={'#ffffff'}
+              // roughnessMap={noiseMap}
+              metalness={0.2}
+              roughness={0.97}
+              transmission={0.8}
+              opacity={0.8}
+              transparent={true}
+              reflectivity={0.45}
+              envMapIntensity={0.1}
+              // map={noiseMap}
+              // bumpMap={noiseMap}
+              // alphaMap={noiseMap}
+              // envMap={noiseMap}
+              // lightMap={noiseMap}
+            />
+          </mesh>
+        }
         {/* <color attach="background" args={['#17171b']} /> */}
         <Environment
           background={false}
@@ -90,9 +94,12 @@ export default function App() {
         />
         
         <Camera />      
-        {/* <EffectComposer>
-          <Noise opacity={0.06} />
-        </EffectComposer> */}
+        {
+          !isMobile &&
+          <EffectComposer>
+            <Noise opacity={0.06} />
+          </EffectComposer>
+        }
 
       </Canvas>
     </>
