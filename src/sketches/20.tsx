@@ -66,7 +66,7 @@ export default function App() {
           
         </group>
         {
-          !isMobile &&
+          false && !isMobile &&
           <mesh position={[0, 0, 0.4]} rotation={[0 , 0, 0]}>
             <planeGeometry args={[1, 1]} />
             <meshPhysicalMaterial
