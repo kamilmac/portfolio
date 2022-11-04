@@ -52,7 +52,7 @@ export default function App() {
                 <>
                   <mesh >
                     <bufferGeometry { ...nodes.base.geometry } />
-                    <meshStandardMaterial roughness={0.25} metalness={0.3}  color={'#eee'} /> :
+                    <meshStandardMaterial roughness={0.25} metalness={0.3}  color={'#eee'} />
                   </mesh>
                   <mesh>
                     <bufferGeometry { ...nodes.glass.geometry } />
@@ -61,15 +61,15 @@ export default function App() {
                       toneMapped={false} fog={true}
                       roughness={0.35} color={'#eee'} 
                       envMapIntensity={20}
-                      /> :
+                      />
                   </mesh>
                   <mesh>
                     <bufferGeometry { ...nodes.binding.geometry } />
-                    <meshStandardMaterial roughness={0.55} metalness={0.3}  color={'#eee'} /> :
+                    <meshStandardMaterial roughness={0.55} metalness={0.3}  color={'#eee'} />
                   </mesh>
                   <mesh>
                     <bufferGeometry { ...nodes.tubes.geometry } />
-                    <meshStandardMaterial roughness={0.1} metalness={0.3} color={'#eee'} /> :
+                    <meshStandardMaterial roughness={0.1} metalness={0.3} color={'#eee'} />
                   </mesh>
                 </>
               </>
@@ -86,22 +86,16 @@ export default function App() {
           <LightSphere />
         </group>
         <spotLight
-          color={[1, 0.25, 0.7]}
+          color={'blue'}
           intensity={1}
           angle={0.6}
-          penumbra={1}
           position={[-4, 5, 15]}
-          castShadow
-          shadow-bias={-0.0001}
         />
         <spotLight
-          color={[0.14, 0.5, 1]}
+          color={'red'}
           intensity={1}
           angle={0.6}
-          penumbra={1}
           position={[-4, 5, -15]}
-          castShadow
-          shadow-bias={-0.0001}
         />
         {
           !isMobile &&
