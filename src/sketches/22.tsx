@@ -2,8 +2,8 @@ import * as THREE from 'three'
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import React from 'react'
 import { Environment, meshBounds, MeshReflectorMaterial, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
-import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from '@react-three/postprocessing'
 import { Clock, Group, Side, TextureLoader, Vector3 } from 'three'
+import { Physics, useBox, Debug } from '@react-three/cannon'
 
 export default function App() {
   return (
@@ -21,21 +21,31 @@ export default function App() {
         dpr={window.devicePixelRatio}
       >
         {/* <Atom /> */}
-        <Letter
-          letter={'A'}
-        />
-        <Letter
-          letter={'D'}
-          offset={4}
-        />
-        <Letter
-          letter={'A'}
-          offset={8}
-        />
-        <Letter
-          letter={'M'}
-          offset={12}
-        />
+        <Physics
+          gravity={[0,-8.4,0]}
+        >
+          <Debug color="black" scale={1.1}>
+            <Letter
+              letter={'A'}
+            />
+            <Letter
+              letter={'D'}
+              offset={4}
+            />
+            <Letter
+              letter={'A'}
+              offset={8}
+            />
+            <Letter
+              letter={'M'}
+              offset={12}
+            />
+            {/* <Boxes
+              size={1}
+              number={100}
+            /> */}
+          </Debug>
+        </Physics>
         <Environment
           // background={true}
           preset='forest'
@@ -69,7 +79,7 @@ export default function App() {
           near={1}
           fov={60}
           up={[0, 1, 0]}
-          position={[4, 3, 3]}
+          position={[30, 0, 30]}
           rotation={[-2.38, 0.86, 2.51]}
         />
       </Canvas>
@@ -77,7 +87,7 @@ export default function App() {
   );
 };
 
-const Letter = ({letter, offset}) => {
+const Letter = ({letter, offset}) => {  
   const LETTERS = {
     'A': [
       3, 1, 2, 0,
@@ -220,6 +230,7 @@ const Letter = ({letter, offset}) => {
 
 const Atom = ({ empty }) => {
   const [hovered, setHover] = React.useState(false)
+  const [ref, api] = useBox(() => ({ mass: 100, args: [1,1,1]  }))
 
   const vertices = new Float32Array( [
     0, 0, 0,
@@ -255,12 +266,14 @@ const Atom = ({ empty }) => {
     0, 0, 1,
   ] );
 
+  if (empty) { return null}
   return (
     <mesh
       rotation={[0,hovered ? Math.PI/4 : Math.PI/2,0]}
       onPointerOver={() => setHover(true)}
       onPointerOut={() => setTimeout(() => setHover(false), 800)}
       scale={hovered ? 0.66 : 0.95}
+      ref={ref}
     >
       <bufferGeometry 
         attach="geometry"
@@ -276,4 +289,24 @@ const Atom = ({ empty }) => {
       <meshBasicMaterial attach="material" color={empty ? 'hotpink' : '#ededed'} side={THREE.DoubleSide} />
     </mesh>
   );
+}
+
+const Boxes = ({ number, size }) => {
+  const args= [size, size, size]
+  const [ref, { at }] = useBox(
+    () => ({
+      args,
+      mass: 1,
+      // position: [Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5],
+    }),
+    React.useRef(null),
+  )
+  // useFrame(() => at(Math.floor(Math.random() * number)).position.set(0, Math.random() * 2, 0))
+  return (
+    <instancedMesh receiveShadow castShadow ref={ref} args={[undefined, undefined, number]}>
+      <boxBufferGeometry args={args}>
+      </boxBufferGeometry>
+      <meshLambertMaterial vertexColors />
+    </instancedMesh>
+  )
 }
