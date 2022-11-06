@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import React from 'react'
-import { Environment, MeshReflectorMaterial, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
+import { Environment, meshBounds, MeshReflectorMaterial, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
 import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from '@react-three/postprocessing'
-import { Clock, Side, TextureLoader, Vector3 } from 'three'
+import { Clock, Group, Side, TextureLoader, Vector3 } from 'three'
 
 export default function App() {
   return (
@@ -20,7 +20,8 @@ export default function App() {
         }}
         dpr={window.devicePixelRatio}
       >
-        <Atom />
+        {/* <Atom /> */}
+        <Letter />
         <Environment
           // background={true}
           preset='forest'
@@ -62,10 +63,43 @@ export default function App() {
   );
 };
 
+const Letter = () => {
+  const letterA = [
+    0, 1, 0, 0,
+    1, 0, 1, 0,
+    1, 1, 1, 0,
+    1, 0, 1, 0,
+  ];
+
+  const positionsX = [
+    0, 1, 2, 3,
+    0, 1, 2, 3,
+    0, 1, 2, 3,
+    0, 1, 2, 3,
+  ];
+
+  const positionsY = [
+    3, 3, 3, 3,
+    2, 2, 2, 2,
+    1, 1, 1, 1,
+    0, 0, 0, 0,
+  ];
+
+  return (
+    <group>
+      {letterA.map((p, i) =>
+        !!p ?
+          <mesh position={[positionsX[i], positionsY[i], 0]} rotation={[0,Math.PI/ 2,0]} >
+            <Atom />
+          </mesh>
+          : null
+          
+      )}
+    </group>
+  );
+}
+
 const Atom = () => {
-  // const geometry = new THREE.BufferGeometry();
-  // create a simple square shape. We duplicate the top left and bottom right
-  // vertices because each vertex needs to appear once per triangle.
   const vertices = new Float32Array( [
     0, 0, 0,
     0, 0, 1,
@@ -100,10 +134,6 @@ const Atom = () => {
     0, 0, 1,
   ] );
 
-  // itemSize = 3 because there are 3 values (components) per vertex
-  // geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-  // const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-  // const mesh = new THREE.Mesh( geometry, material );
   return (
     <mesh>
       <bufferGeometry 
@@ -117,7 +147,7 @@ const Atom = () => {
         />
       </bufferGeometry>
       {/* <boxGeometry args={[1, 1, 1]} /> */}
-      <meshBasicMaterial attach="material" color="red" side={THREE.DoubleSide} />
+      <meshBasicMaterial attach="material" color="#ededed" side={THREE.DoubleSide} />
     </mesh>
   );
 }
