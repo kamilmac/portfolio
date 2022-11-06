@@ -23,8 +23,9 @@ export default function App() {
         {/* <Atom /> */}
         <Physics
           gravity={[0,-8.4,0]}
+          isPaused
         >
-          <Debug color="black" scale={1.1}>
+          <Debug color="red" scale={1}>
             <Letter
               letter={'A'}
             />
@@ -87,7 +88,7 @@ export default function App() {
   );
 };
 
-const Letter = ({letter, offset}) => {  
+const Letter = ({letter, offset=0}) => {  
   const LETTERS = {
     'A': [
       3, 1, 2, 0,
@@ -152,75 +153,32 @@ const Letter = ({letter, offset}) => {
       case 1:
         return (
           <group>
-            <mesh position={[positionsX[i], positionsY[i], 0]}>
-              <Atom />
-            </mesh>
-            <mesh position={[positionsX[i]+1, positionsY[i]+1, 0]} rotation={[0,0,Math.PI]}>
-              <Atom />
-            </mesh>
+            <Atom pos={[positionsX[i] + offset, positionsY[i], 0]}/>
+            <Atom pos={[positionsX[i] + offset, positionsY[i], 0]} />
           </group>
         );
       case 2:
         return (
-          <group>
-            <mesh position={[positionsX[i], positionsY[i], 0]}>
-              <Atom />
-            </mesh>
-            <mesh position={[positionsX[i]+1, positionsY[i]+1, 0]} rotation={[0,0,Math.PI]}>
-              <Atom empty/>
-            </mesh>
-          </group>
+          <Atom pos={[positionsX[i] + offset, positionsY[i], 0]}/>
         );
       case 3:
         return (
-          <group>
-            <mesh position={[positionsX[i]+1, positionsY[i], 0]} rotation={[0,0,Math.PI/2]}>
-              <Atom />
-            </mesh>
-            <mesh position={[positionsX[i], positionsY[i]+1, 0]} rotation={[0,0,-Math.PI/2]}>
-              <Atom empty/>
-            </mesh>
-         </group>
+          <Atom pos={[positionsX[i] + offset, positionsY[i], 0]} />
         );
       case 4:
         return (
-          <group>
-            <mesh position={[positionsX[i], positionsY[i]+1, 0]} rotation={[0,0,-Math.PI/2]}>
-              <Atom />
-            </mesh>
-            <mesh position={[positionsX[i]+1, positionsY[i], 0]} rotation={[0,0,Math.PI/2]}>
-              <Atom empty/>
-            </mesh>
-          </group>
+          <Atom pos={[positionsX[i] + offset, positionsY[i], 0]} />
         );
       case 5:
         return (
-        <group>
-          <mesh position={[positionsX[i]+1, positionsY[i]+1, 0]} rotation={[0,0,-Math.PI]}>
-            <Atom />
-          </mesh>
-          <mesh position={[positionsX[i], positionsY[i], 0]}>
-            <Atom empty/>
-          </mesh>
-        </group>
+          <Atom pos={[positionsX[i] + offset, positionsY[i], 0]} />
         );
-      default: return (
-        <group>
-          <mesh position={[positionsX[i], positionsY[i], 0]}>
-            <Atom empty/>
-          </mesh>
-          <mesh position={[positionsX[i]+1, positionsY[i]+1, 0]} rotation={[0,0,Math.PI]}>
-            <Atom empty/>
-          </mesh>
-        </group>
-      );
+      default: return null;
     }
   };
 
   return (
-    <group
-      position={[offset ? offset : 0,0,0]}
-    >
+    <group>
       {LETTERS[letter].map((p, i) =>
         select(p, i)
       )}
@@ -228,9 +186,9 @@ const Letter = ({letter, offset}) => {
   );
 }
 
-const Atom = ({ empty }) => {
+const Atom = ({ empty, rotation, pos }) => {
   const [hovered, setHover] = React.useState(false)
-  const [ref, api] = useBox(() => ({ mass: 100, args: [1,1,1]  }))
+  const [ref, api] = useBox(() => ({ mass: 100, position: pos, rotation }))
 
   const vertices = new Float32Array( [
     0, 0, 0,
@@ -265,15 +223,15 @@ const Atom = ({ empty }) => {
     0, 1, 0,
     0, 0, 1,
   ] );
-
-  if (empty) { return null}
+  console.log(pos);
+  
   return (
     <mesh
-      rotation={[0,hovered ? Math.PI/4 : Math.PI/2,0]}
+      // rotation={rotation}
       onPointerOver={() => setHover(true)}
       onPointerOut={() => setTimeout(() => setHover(false), 800)}
-      scale={hovered ? 0.66 : 0.95}
       ref={ref}
+      // position={pos}
     >
       <bufferGeometry 
         attach="geometry"
