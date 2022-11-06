@@ -3,7 +3,7 @@ import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import React from 'react'
 import { Environment, MeshReflectorMaterial, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
 import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from '@react-three/postprocessing'
-import { Clock, TextureLoader, Vector3 } from 'three'
+import { Clock, Side, TextureLoader, Vector3 } from 'three'
 
 export default function App() {
   return (
@@ -22,10 +22,10 @@ export default function App() {
       >
         <Atom />
         <Environment
-          background={false}
+          // background={true}
           preset='forest'
         />
-         <spotLight
+        {/* <spotLight
           color={'blue'}
           intensity={1}
           angle={0.6}
@@ -36,7 +36,9 @@ export default function App() {
           intensity={1}
           angle={0.6}
           position={[-4, 5, -15]}
-        />
+        /> */}
+        <ambientLight intensity={1} />
+
         <OrbitControls
           minPolarAngle={0.5}
           maxPolarAngle={1.5}
@@ -65,13 +67,37 @@ const Atom = () => {
   // create a simple square shape. We duplicate the top left and bottom right
   // vertices because each vertex needs to appear once per triangle.
   const vertices = new Float32Array( [
-    -1.0, -1.0,  1.0,
-    1.0, -1.0,  1.0,
-    1.0,  1.0,  1.0,
+    0, 0, 0,
+    0, 0, 1,
+    0, 1, 0,
 
-    1.0,  1.0,  1.0,
-    -1.0,  1.0,  1.0,
-    -1.0, -1.0,  1.0
+    -1, 0, 0,
+    -1, 0, 1,
+    -1, 1, 0,
+
+    0, 0, 0,
+    0, 0, 1,
+    -1, 0, 0,
+
+    -1, 0, 0,
+    -1, 0, 1,
+    0, 0, 1,
+
+    0, 0, 0,
+    -1, 0, 0,
+    0, 1, 0,
+
+    0, 1, 0,
+    -1, 1, 0,
+    -1, 0, 0,
+
+    0, 0, 1,
+    -1, 0, 1,
+    -1, 1, 0,
+
+    -1, 1, 0,
+    0, 1, 0,
+    0, 0, 1,
   ] );
 
   // itemSize = 3 because there are 3 values (components) per vertex
@@ -79,20 +105,19 @@ const Atom = () => {
   // const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
   // const mesh = new THREE.Mesh( geometry, material );
   return (
-    <mesh castShadow={true} receiveShadow={true} position={[0,0,0]}>
-      {/* <bufferGeometry 
+    <mesh>
+      <bufferGeometry 
         attach="geometry"
       >
         <bufferAttribute
-          attachObject={["attributes", "position"]}
+          attach="attributes-position" 
           count={vertices.length / 3}
           array={vertices}
           itemSize={3}
         />
-      </bufferGeometry> */}
-      <boxGeometry args={[1, 1, 1]} />
-
-      <meshPhongMaterial attach="material" color="blue" />
+      </bufferGeometry>
+      {/* <boxGeometry args={[1, 1, 1]} /> */}
+      <meshBasicMaterial attach="material" color="red" side={THREE.DoubleSide} />
     </mesh>
   );
 }
