@@ -43,6 +43,67 @@ export default function App() {
               letter={'M'}
               offset={12}
             />
+
+            <Letter
+              letter={'A'}
+              offsetY={5}
+            />
+            <Letter
+              letter={'D'}
+              offset={4}
+              offsetY={5}
+            />
+            <Letter
+              letter={'A'}
+              offset={8}
+              offsetY={5}
+            />
+            <Letter
+              letter={'M'}
+              offset={12}
+              offsetY={5}
+            />
+
+            <Letter
+              letter={'A'}
+              offsetY={10}
+            />
+            <Letter
+              letter={'D'}
+              offset={4}
+              offsetY={10}
+            />
+            <Letter
+              letter={'A'}
+              offset={8}
+              offsetY={10}
+            />
+            <Letter
+              letter={'M'}
+              offset={12}
+              offsetY={10}
+            />
+
+            <Letter
+              letter={'A'}
+              offsetY={15}
+            />
+            <Letter
+              letter={'D'}
+              offset={4}
+              offsetY={15}
+            />
+            <Letter
+              letter={'A'}
+              offset={8}
+              offsetY={15}
+            />
+            <Letter
+              letter={'M'}
+              offset={12}
+              offsetY={15}
+            />
+
             {/* <Boxes
               size={1}
               number={100}
@@ -90,7 +151,7 @@ export default function App() {
   );
 };
 
-const Letter = ({letter, offset = 0}) => {  
+const Letter = ({letter, offset = 0, offsetY = 0}) => {  
   const LETTERS = {
     'A': [
       3, 1, 2, 0,
@@ -155,25 +216,25 @@ const Letter = ({letter, offset = 0}) => {
       case 1:
         return (
           <group>
-            <Atom pos={[positionsX[i] + offset, positionsY[i], 0]}/>
-            <Atom rotation={[Math.PI,Math.PI,0]} pos={[positionsX[i] + 1 + offset, positionsY[i] + 1, 0]} />
+            <Atom pos={[positionsX[i] + offset, positionsY[i] + offsetY, 0]}/>
+            <Atom rotation={[Math.PI,Math.PI,0]} pos={[positionsX[i] + 1 + offset, positionsY[i] + 1 + offsetY, 0]} />
           </group>
         );
       case 2:
         return (
-          <Atom pos={[positionsX[i] + offset, positionsY[i], 0]}/>
+          <Atom pos={[positionsX[i] + offset, positionsY[i] + offsetY, 0]}/>
         );
       case 3:
         return (
-          <Atom rotation={[Math.PI,Math.PI,Math.PI]} pos={[positionsX[i] + 1 + offset, positionsY[i], 1]} />
+          <Atom rotation={[Math.PI,Math.PI,Math.PI]} pos={[positionsX[i] + 1 + offset, positionsY[i] + offsetY, 1]} />
         );
       case 4:
         return (
-          <Atom rotation={[0,0,Math.PI]} pos={[positionsX[i] + offset, positionsY[i] + 1, 1]} />
+          <Atom rotation={[0,0,Math.PI]} pos={[positionsX[i] + offset, positionsY[i] + 1 + offsetY, 1]} />
         );
       case 5:
         return (
-          <Atom rotation={[0,Math.PI,Math.PI]} pos={[positionsX[i] + 1 + offset, positionsY[i] + 1, 0]} />
+          <Atom rotation={[0,Math.PI,Math.PI]} pos={[positionsX[i] + 1 + offset, positionsY[i] + 1 + offsetY, 0]} />
         );
       default: return null;
     }
