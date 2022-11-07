@@ -6,6 +6,7 @@ import { Clock, Group, Side, TextureLoader, Vector3 } from 'three'
 import { Physics, useBox, Debug } from '@react-three/cannon'
 
 export default function App() {
+  const [paused, setPaused] = React.useState(true)
   return (
     <>
       <Canvas
@@ -19,11 +20,12 @@ export default function App() {
           outputEncoding: THREE.sRGBEncoding,
         }}
         dpr={window.devicePixelRatio}
+        onClick={() => setPaused(!paused)}
       >
         {/* <Atom /> */}
         <Physics
           gravity={[0,-8.4,0]}
-          isPaused
+          isPaused={paused}
         >
           <Debug color="red" scale={1}>
             <Letter
@@ -69,7 +71,7 @@ export default function App() {
           minPolarAngle={0.5}
           maxPolarAngle={1.5}
           rotateSpeed={0.6}
-          autoRotate
+          // autoRotate
           autoRotateSpeed={0.3}
           enableDamping
         />
@@ -88,7 +90,7 @@ export default function App() {
   );
 };
 
-const Letter = ({letter, offset=0}) => {  
+const Letter = ({letter, offset = 0}) => {  
   const LETTERS = {
     'A': [
       3, 1, 2, 0,
@@ -154,7 +156,7 @@ const Letter = ({letter, offset=0}) => {
         return (
           <group>
             <Atom pos={[positionsX[i] + offset, positionsY[i], 0]}/>
-            <Atom pos={[positionsX[i] + offset, positionsY[i], 0]} />
+            <Atom rotation={[Math.PI,Math.PI,0]} pos={[positionsX[i] + 1 + offset, positionsY[i] + 1, 0]} />
           </group>
         );
       case 2:
@@ -163,15 +165,15 @@ const Letter = ({letter, offset=0}) => {
         );
       case 3:
         return (
-          <Atom pos={[positionsX[i] + offset, positionsY[i], 0]} />
+          <Atom rotation={[Math.PI,Math.PI,Math.PI]} pos={[positionsX[i] + 1 + offset, positionsY[i], 1]} />
         );
       case 4:
         return (
-          <Atom pos={[positionsX[i] + offset, positionsY[i], 0]} />
+          <Atom rotation={[0,0,Math.PI]} pos={[positionsX[i] + offset, positionsY[i] + 1, 1]} />
         );
       case 5:
         return (
-          <Atom pos={[positionsX[i] + offset, positionsY[i], 0]} />
+          <Atom rotation={[0,Math.PI,Math.PI]} pos={[positionsX[i] + 1 + offset, positionsY[i] + 1, 0]} />
         );
       default: return null;
     }
@@ -186,9 +188,17 @@ const Letter = ({letter, offset=0}) => {
   );
 }
 
-const Atom = ({ empty, rotation, pos }) => {
+const Atom = ({ rotation=[0,0,0], pos }) => {
   const [hovered, setHover] = React.useState(false)
-  const [ref, api] = useBox(() => ({ mass: 100, position: pos, rotation }))
+  const [ref, api] = useBox(() => ({
+    mass: 100,
+    position: pos,
+    rotation: [
+      rotation[0],
+      rotation[1] + Math.PI/2,
+      rotation[2],
+    ],
+  }));
 
   const vertices = new Float32Array( [
     0, 0, 0,
@@ -223,11 +233,9 @@ const Atom = ({ empty, rotation, pos }) => {
     0, 1, 0,
     0, 0, 1,
   ] );
-  console.log(pos);
   
   return (
     <mesh
-      // rotation={rotation}
       onPointerOver={() => setHover(true)}
       onPointerOut={() => setTimeout(() => setHover(false), 800)}
       ref={ref}
@@ -244,7 +252,7 @@ const Atom = ({ empty, rotation, pos }) => {
         />
       </bufferGeometry>
       {/* <boxGeometry args={[1, 1, 1]} /> */}
-      <meshBasicMaterial attach="material" color={empty ? 'hotpink' : '#ededed'} side={THREE.DoubleSide} />
+      <meshBasicMaterial attach="material" color={'#ededed'} side={THREE.DoubleSide} />
     </mesh>
   );
 }
