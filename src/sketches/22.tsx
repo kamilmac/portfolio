@@ -3,7 +3,7 @@ import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import React from 'react'
 import { Environment, meshBounds, MeshReflectorMaterial, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
 import { Clock, Group, Side, TextureLoader, Vector3 } from 'three'
-import { Physics, useBox, Debug } from '@react-three/cannon'
+import { Physics, useBox, usePlane } from '@react-three/cannon'
 
 export default function App() {
   const [paused, setPaused] = React.useState(true)
@@ -15,7 +15,7 @@ export default function App() {
           background: 'radial-gradient( #1d1d1d 20%, #111 80%)',
         }}
         gl={{
-          antialias: false,
+          antialias: true,
           toneMapping: THREE.LinearToneMapping,
           outputEncoding: THREE.sRGBEncoding,
         }}
@@ -24,10 +24,9 @@ export default function App() {
       >
         {/* <Atom /> */}
         <Physics
-          gravity={[0,-8.4,0]}
+          gravity={[0,0,-30.4]}
           isPaused={paused}
         >
-          <Debug color="red" scale={1}>
             <Letter
               letter={'A'}
             />
@@ -103,12 +102,12 @@ export default function App() {
               offset={12}
               offsetY={15}
             />
+            <Plane rotation={[0, 0, 0]} position={[0,0,-64]}/>
 
             {/* <Boxes
               size={1}
               number={100}
             /> */}
-          </Debug>
         </Physics>
         <Environment
           // background={true}
@@ -141,15 +140,28 @@ export default function App() {
           makeDefault={true}
           far={100000}
           near={1}
-          fov={60}
+          fov={70}
           up={[0, 1, 0]}
-          position={[30, 0, 30]}
+          position={[0, 0, 64]}
           rotation={[-2.38, 0.86, 2.51]}
         />
       </Canvas>
     </>
   );
 };
+
+
+function Plane(props): JSX.Element {
+  const [ref] = usePlane(() => ({ type: 'Static', ...props }), React.useRef<Group>(null))
+  return (
+    <group ref={ref}>
+      <mesh>
+        <planeBufferGeometry args={[100, 100]} />
+        <meshBasicMaterial color="#222" />
+      </mesh>
+    </group>
+  )
+}
 
 const Letter = ({letter, offset = 0, offsetY = 0}) => {  
   const LETTERS = {
