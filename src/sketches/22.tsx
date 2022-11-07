@@ -4,6 +4,7 @@ import React from 'react'
 import { Environment, meshBounds, MeshReflectorMaterial, OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei'
 import { Clock, Group, Side, TextureLoader, Vector3 } from 'three'
 import { Physics, useBox, usePlane } from '@react-three/cannon'
+import { EffectComposer, DepthOfField, Bloom, Noise, Vignette } from '@react-three/postprocessing'
 
 export default function App() {
   const [paused, setPaused] = React.useState(true)
@@ -126,7 +127,9 @@ export default function App() {
           position={[-4, 5, -15]}
         /> */}
         <ambientLight intensity={0} />
-
+        <EffectComposer>
+          <DepthOfField focusDistance={0.0007} focalLength={0.0013} bokehScale={2} height={280} />
+        </EffectComposer>
         <OrbitControls
           minPolarAngle={0.5}
           maxPolarAngle={1.5}
@@ -140,7 +143,7 @@ export default function App() {
           makeDefault={true}
           far={100000}
           near={1}
-          fov={70}
+          fov={40}
           up={[0, 1, 0]}
           position={[0, 0, 64]}
           rotation={[-2.38, 0.86, 2.51]}
@@ -156,7 +159,7 @@ function Plane(props): JSX.Element {
   return (
     <group ref={ref}>
       <mesh>
-        <planeBufferGeometry args={[100, 100]} />
+        <planeBufferGeometry args={[400, 400]} />
         <meshBasicMaterial color="#222" />
       </mesh>
     </group>
@@ -325,7 +328,7 @@ const Atom = ({ rotation=[0,0,0], pos }) => {
         />
       </bufferGeometry>
       {/* <boxGeometry args={[1, 1, 1]} /> */}
-      <meshBasicMaterial attach="material" color={'#ededed'} side={THREE.DoubleSide} />
+      <meshBasicMaterial attach="material" color={'hotpink'} side={THREE.DoubleSide} />
     </mesh>
   );
 }
